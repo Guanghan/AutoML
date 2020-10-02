@@ -5,6 +5,7 @@
 @file_desc: Register classes so that a class can be instantiated via config file;
             no need to know explicitly which one.
 """
+from copy import deepcopy
 
 class ClassType(object):
     """Const class: saved defined class type."""
@@ -117,3 +118,12 @@ class ClassFactory(object):
         if cls_name is None:
             return type_name in cls.__registry__
         return type_name in cls.__registry__ and cls_name in cls.__registry__.get(type_name)
+
+    @classmethod
+    def attach_config_to_factory(cls, configs):
+        """ Attach config to Class Factory
+
+        Args:
+            configs:
+        """
+        cls.__configs__ = deepcopy(configs)

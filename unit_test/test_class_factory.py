@@ -27,8 +27,32 @@ def test_register_cls():
 
 
 def test_get_cls():
-    assert False
+    # Register
+    from src.core.class_factory import ClassFactory, ClassType
+    @ClassFactory.register(ClassType.DATASET)
+    class COCO(object):
+        def __init__(self):
+            print("COCO dataset")
+
+    # config
+    from src.utils.read_configure import Config
+    config = Config("../configs/example.yaml")
+    print(config)
+
+    # attach config to ClassFactory
+    ClassFactory.attach_config_to_factory(config)
+    print(ClassFactory.__configs__)
+
+    # get corresponding classname given an attribute
+    cls = ClassFactory.get_cls('dataset')
+    import inspect
+    assert inspect.isclass(cls) and cls.__name__ == 'COCO'
 
 
 def test_is_exists():
-    assert False
+    from src.core.class_factory import ClassFactory, ClassType
+    @ClassFactory.register(ClassType.DATASET)
+    class COCO(object):
+        def __init__(self):
+            print("COCO dataset")
+    assert(ClassFactory.is_exists('dataset'))
