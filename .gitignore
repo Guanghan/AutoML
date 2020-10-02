@@ -1,0 +1,8 @@
+*.pyc
+doc/_build/*
+doc/_static/*
+doc/_templates/*
+unit_test/.pytest_cache
+venv/*
+.idea/*
+.DS_Store
