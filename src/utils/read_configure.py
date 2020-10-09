@@ -22,10 +22,10 @@ class Config(dict):
             with open(yaml_path) as file:
                 # yaml load example: http://zetcode.com/python/yaml/
                 raw_dict = yaml.load(file, Loader=yaml.FullLoader)
-                _dict2config(self, raw_dict)
+                dict2config(self, raw_dict)
 
 
-def _dict2config(config_dst: Config, dict_src: dict):
+def dict2config(config_dst: Config, dict_src: dict):
     """ Convert dictionary to config.
 
     Args:
@@ -36,7 +36,7 @@ def _dict2config(config_dst: Config, dict_src: dict):
         for key, value in dict_src.items():
             if isinstance(value, dict):
                 sub_config = Config()
-                _dict2config(sub_config, value)
+                dict2config(sub_config, value)
                 dict.__setitem__(config_dst, key, sub_config)
             else:
                 config_dst[key] = dict_src[key]

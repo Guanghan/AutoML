@@ -6,6 +6,7 @@
             no need to know explicitly which one.
 """
 from copy import deepcopy
+from enum import Enum
 
 class ClassType(object):
     """Const class: saved defined class type."""
@@ -13,6 +14,7 @@ class ClassType(object):
     GENERAL = 'general'
     # NAS and HPO
     SEARCH_ALGORITHM = 'search_algorithm'
+    CODEC = 'search_algorithm.codec'
     SEARCH_SPACE = 'search_space'
     # trainer
     TRAINER = 'trainer'
@@ -26,6 +28,15 @@ class ClassType(object):
     # evaluator
     EVALUATOR = 'evaluator'
 
+class NetworkType(object):
+    """Const class: saved defined network type."""
+    BLOCK = 'block'
+    BACKBONE = 'backbone'
+    HEAD = 'head'
+    LOSS = 'loss'
+    SUPER_NETWORK = 'super_network'
+    CUSTOM = 'custom'
+    OPERATOR = 'operator'
 
 class ClassFactory(object):
     """A Factory Class to manage all classes that need to register with config."""
@@ -124,6 +135,6 @@ class ClassFactory(object):
         """ Attach config to Class Factory
 
         Args:
-            configs:
+            configs (Config): the config object read from yaml
         """
         cls.__configs__ = deepcopy(configs)
