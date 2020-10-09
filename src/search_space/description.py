@@ -24,7 +24,7 @@ class NetworkDesc(object):
         self._model_name = None
 
     def to_model(self):
-        """Transform a NetworkDesc to a special model."""
+        """Transform a NetworkDesc to a specific model."""
         if 'modules' not in self._desc:
             logging.debug("network=%s does not have key modules. desc={}".format(self._desc))
             return None
@@ -45,7 +45,7 @@ class NetworkDesc(object):
         """Create network by module type."""
         module_desc = deepcopy(self._desc.get(module_type))
         if 'name' not in module_desc:
-            raise KeyError('module descript does not have key {name}')
+            raise KeyError('module description does not have key {name}')
 
         module_name = module_desc.get('name')
         print("module_type: {}".format(module_type))
