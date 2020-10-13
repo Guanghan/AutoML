@@ -138,3 +138,21 @@ class ClassFactory(object):
             configs (Config): the config object read from yaml
         """
         cls.__configs__ = deepcopy(configs)
+
+    @classmethod
+    def register_from_package(cls, package, type_name=ClassType.GENERAL):
+        """Register all public class from package.
+
+        Args:
+            t_cls: class need to register.
+            type_name: type name.
+        """
+        from inspect import isfunction, isclass
+        for _name in dir(package):
+            if _name.startswith("_"):
+                continue
+
+            _cls = getattr(package, _name)
+            if not isclass(_cls) and not isfunction(_cls):
+                continue
+            ClassFactory.register_cls(_cls, type_name)
