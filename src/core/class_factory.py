@@ -6,7 +6,7 @@
             no need to know explicitly which one.
 """
 from copy import deepcopy
-from enum import Enum
+
 
 class ClassType(object):
     """Const class: saved defined class type."""
@@ -27,6 +27,9 @@ class ClassType(object):
     TRANSFORM = 'dataset.transforms'
     # evaluator
     EVALUATOR = 'evaluator'
+    # callback
+    CALLBACK = 'trainer.base_callback'
+
 
 class NetworkType(object):
     """Const class: saved defined network type."""
@@ -37,6 +40,7 @@ class NetworkType(object):
     SUPER_NETWORK = 'super_network'
     CUSTOM = 'custom'
     OPERATOR = 'operator'
+
 
 class ClassFactory(object):
     """A Factory Class to manage all classes that need to register with config."""
@@ -121,7 +125,7 @@ class ClassFactory(object):
 
         Args:
             type_name: type name of class registry
-            t_cls_name: (alternatively) class name can be explicitly given
+            cls_name: (alternatively) class name can be explicitly given
 
         Returns: True/False
 
@@ -144,7 +148,8 @@ class ClassFactory(object):
         """Register all public class from package.
 
         Args:
-            t_cls: class need to register.
+            cls: class need to register.
+            package: package to register class from.
             type_name: type name.
         """
         from inspect import isfunction, isclass

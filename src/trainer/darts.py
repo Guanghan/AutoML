@@ -10,6 +10,7 @@ from src.trainer.base_callback import Callback
 from src.search_algorithms.base_algorithm import SearchAlgorithm
 from src.search_space.search_space import SearchSpace
 
+
 @ClassFactory.register(ClassType.CALLBACK)
 class DartsTrainer(Callback):
     """A special callback for DartsTrainer."""
@@ -32,10 +33,10 @@ class DartsTrainer(Callback):
         """Be called after Training."""
 
     def _get_arch_weights(self):
-        """Save result descript."""
+        """Save result description."""
 
     def _save_descript(self):
-        """Save result descript."""
+        """Save result description."""
 
     def _gen_model_desc(self, genotypes, template):
-        """Save result descript."""
+        """Save result description."""
