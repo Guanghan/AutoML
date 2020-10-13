@@ -3,22 +3,6 @@ import torch
 import torch.nn as nn
 
 
-class ReluConvBn(nn.Module):
-    """Class of ReLU + Conv + BN."""
-
-    def __init__(self, desc):
-        super(ReluConvBn, self).__init__()
-        affine = desc.get('affine', True)
-        relu = nn.ReLU(inplace=False)
-        conv = nn.Conv2d(desc.channel_in, desc.channel_out, desc.kernel_size,
-                         stride=desc.stride, padding=desc.padding, bias=False)
-        bn = nn.BatchNorm2d(desc.channel_out, affine=affine)
-        self.block = nn.Sequential(relu, conv, bn)
-
-    def forward(self, x):
-        return self.block(x)
-
-
 class DilatedConv(nn.Module):
     """Class of Dilation Convolution."""
 

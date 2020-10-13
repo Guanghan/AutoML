@@ -9,7 +9,7 @@ log.setLevel("INFO")
 
 from src.core.class_factory import ClassType, ClassFactory
 from src.core.base_task import Task
-from src.utils.read_configure import load_conf_from_desc
+from src.utils.read_configure import desc2config
 from src.search_space.base_codec import Codec
 
 class SearchAlgorithm(Task):
@@ -17,6 +17,14 @@ class SearchAlgorithm(Task):
 
     Args:
         search_space (SearchSpace): User defined `search_space`, default is None.
+
+    Attributes:
+        self.config
+        self.codec
+        self.search_space
+
+    Properties:
+        self.is_completed
     """
 
     config = None
@@ -33,18 +41,25 @@ class SearchAlgorithm(Task):
         return super().__new__(t_cls)
 
     def __init__(self, search_space=None, **kwargs):
-        """Init SearchAlgorithm."""
+        """Init SearchAlgorithm.
+
+        Args:
+            search_space (SearchSpace): initialize the algorithm with a search space
+        """
         super(SearchAlgorithm, self).__init__()
+
         # modify config by kwargs in local scope
         if self.config and kwargs:
-            self.config = self.config()
-            load_conf_from_desc(self.config, kwargs)
+            self.config = self.config() #TODO
+            desc2config(self.config, kwargs)
+        log.info("Config=%s", self.config)
+
         self.search_space = search_space
+
         if hasattr(self.config, 'codec'):
             self.codec = Codec(search_space, type=self.config.codec)
         else:
             self.codec = None
-        log.info("Config=%s", self.config)
 
     def search(self):
         """Search function."""

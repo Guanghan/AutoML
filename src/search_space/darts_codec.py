@@ -25,7 +25,7 @@ class DartsCodec(Codec):
         self.steps = self.darts_cfg.super_network.normal.steps
 
     def decode(self, arch_param):
-        """ Decode the code to network description
+        """ Decode the alphas params to network description
 
         Args:
             arch_param (list of list of float):
@@ -48,7 +48,8 @@ class DartsCodec(Codec):
         return cfg_result
 
     def calc_genotype(self, arch_param):
-        """ Parse genotype from architecture parameters
+        """ Parse genotype from architecture (alpha) parameters
+            From softmax to crisp: picking ops in cell
 
         Args:
             arch_param (list of list of float):

@@ -43,8 +43,7 @@ class DartsNetwork(Network):
         C_curr = self._network_stems(self.network[0])
         C_prev, C_aux = self._network_cells(self.network[1:], C_curr)
         if not self.search and self._auxiliary:
-            self.auxiliary_head = AuxiliaryHead(C_aux, self._classes,
-                                                self._aux_size)
+            self.auxiliary_head = AuxiliaryHead(C_aux, self._classes, self._aux_size)
         self.global_pooling = nn.AdaptiveAvgPool2d(1)
         self.classifier = nn.Linear(C_prev, self._classes)
         if self.search:
@@ -124,7 +123,7 @@ class DartsNetwork(Network):
         """Initialize architecture parameters."""
         k = len(self.desc.normal.genotype)
         num_ops = len(self.desc.normal.genotype[0][0])
-        # TODO: why not using regiser_parameter if requiring gradient?
+        # TODO: why not using register_parameter if requiring gradient?
         self.register_buffer('alphas_normal',
                              (1e-3 * torch.randn(k, num_ops)).cuda().requires_grad_())
         self.register_buffer('alphas_reduce',

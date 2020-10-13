@@ -38,6 +38,7 @@ class Network(nn.Module):
                 model.add_module(name + str(index), item)
         return model
 
+    '''
     @property
     def input_shape(self):
         """Get the model input tensor shape."""
@@ -57,6 +58,7 @@ class Network(nn.Module):
     def from_config(cls, config):
         """Build a model from config."""
         raise NotImplementedError
+    '''
 
     def train(self, mode=True):
         """Train setting."""
@@ -78,12 +80,12 @@ class Network(nn.Module):
             if forward_train:
                 return self.forward_train(*args, **kwargs)
             else:
-                return self.forward_valid(*args, **kwargs)
+                return self.forward_val(*args, **kwargs)
         else:
             if forward_train:
                 return self.multi_forward_train(*args, **kwargs)
             else:
-                return self.multi_forward_valid(*args, **kwargs)
+                return self.multi_forward_val(*args, **kwargs)
 
     def forward_train(self, input, **kwargs):
         """Call train forward function."""
@@ -144,35 +146,12 @@ class Network(nn.Module):
             output = outputs
         return output
 
-    def Input_list_forward(self, input, models, **kwargs):
-        """Call list of input train forward function."""
-        if self.out_list is None:
-            if isinstance(input, list):
-                outputs = []
-                for model, idx in zip(models, [i for i in range(len(input))]):
-                    output = model(input[idx])
-                    outputs.append(output)
-                output = outputs
-            else:
-                raise ValueError("Input must list!")
-        else:
-            input = list(input)
-            for model, idx in zip(models, self.out_list):
-                if isinstance(idx, list):
-                    assert len(idx) == 2
-                    output = model(input[idx[0]], input[idx[1]])
-                    input.append(output)
-                else:
-                    input.append(model(input[idx]))
-            output = input
-        return output
-
-    def forward_valid(self, input, **kwargs):
+    def forward_val(self, input, **kwargs):
         """Call test forward function."""
         raise NotImplementedError
 
     def mutil_forward_train(self, *args, **kwargs):
-        """Call mutil input train forward function."""
+        """Call multi input train forward function."""
         models = list(self.children())
         output = []
         for idx in range(len(args)):
@@ -180,6 +159,6 @@ class Network(nn.Module):
         output = models[-1](*tuple(output))
         return output
 
-    def multi_forward_valid(self, input, **kwargs):
+    def multi_forward_val(self, input, **kwargs):
         """Call test forward function."""
         raise NotImplementedError

@@ -5,10 +5,13 @@
 @file_desc: Implementation of the classic DARTS algorithm
 """
 
-from vega.core.common.class_factory import ClassFactory, ClassType
+from src.core.class_factory import ClassFactory, ClassType
+from src.trainer.base_callback import Callback
+from src.search_algorithms.base_algorithm import SearchAlgorithm
+from src.search_space.search_space import SearchSpace
 
 @ClassFactory.register(ClassType.CALLBACK)
-class DartsTrainerCallback(Callback):
+class DartsTrainer(Callback):
     """A special callback for DartsTrainer."""
 
     def before_train(self, logs=None):

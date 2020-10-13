@@ -156,35 +156,3 @@ class PreOneStem(Network):
         x = self.stem(x)
         return x, x
 
-
-@ClassFactory.register(NetworkType.BLOCK)
-class PreTwoStem(Network):
-    """Class of two stems convolution."""
-
-    def __init__(self, desc):
-        super(PreTwoStem, self).__init__()
-        self._C = desc.C
-        self.stems = nn.ModuleList()
-        stem0 = nn.Sequential(
-            nn.Conv2d(3, self._C // 2, kernel_size=3, stride=2,
-                      padding=1, bias=False),
-            nn.BatchNorm2d(self._C // 2),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(self._C // 2, self._C, 3, stride=2,
-                      padding=1, bias=False),
-            nn.BatchNorm2d(self._C),
-        )
-        self.stems += [stem0]
-        stem1 = nn.Sequential(
-            nn.ReLU(inplace=True),
-            nn.Conv2d(self._C, self._C, 3, stride=2, padding=1, bias=False),
-            nn.BatchNorm2d(self._C),
-        )
-        self.stems += [stem1]
-        self.C_curr = self._C
-
-    def forward(self, x):
-        out = [x]
-        for stem in self.stems:
-            out += [stem(out[-1])]
-        return out[-2], out[-1]

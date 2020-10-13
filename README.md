@@ -42,6 +42,17 @@ pylint example.py
 ### 5. Logging 
 pip install glog
 
+### 6. UML graph
+
+- brew install graphviz
+
+- pip install pyreverse
+
+##### 6.1 CMD: Generate UML graph
+```
+pyreverse -o png -p AutoML src/
+```
 
 ## To users: requirements
 pip install PyYAML
+

@@ -87,7 +87,7 @@ nas:
     trainer:
         type: Trainer
         darts_template_file: "{default_darts_cifar10_template}"
-        callbacks: DartsTrainerCallback
+        callbacks: DartsTrainer
         epochs: 1
         optim:
             type: SGD
@@ -113,7 +113,7 @@ fully_train:
 
     trainer:
         ref: nas.trainer
-        callbacks: DartsFullTrainerCallback
+        callbacks: DartsFullTrainer
         epochs: 6
         lr_scheduler:
             type: CosineAnnealingLR

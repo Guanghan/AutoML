@@ -62,27 +62,6 @@ class NetworkDesc(object):
         return network
 
     @property
-    def md5(self):
-        """MD5 value of network description."""
-        return self.get_md5(self._desc)
-
-    @classmethod
-    def get_md5(cls, desc):
-        """Get desc's short md5 code.
-
-        Args:
-            desc (str): network description.
-
-        Return (str): short MD5 code.
-
-        """
-        _desc = deepcopy(desc)
-        keys = ["modules"] + _desc["modules"]
-        _desc = {key: _desc[key] for key in keys}
-        code = hashlib.md5(json.dumps(_desc, sort_keys=True).encode('utf-8')).hexdigest()
-        return code[:8]
-
-    @property
     def model_type(self):
         """Return model type."""
         return self._model_type
