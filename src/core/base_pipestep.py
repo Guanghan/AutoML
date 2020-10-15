@@ -7,23 +7,6 @@
 from src.core.base_task import Task
 from src.core.class_factory import ClassFactory, ClassType
 
-from src.dataset.base_dataset import DatasetConfig
-from src.search_algorithms.base_algorithm import SearchAlgorithmConfig
-from src.search_space.search_space import SearchSpaceConfig, ModelConfig
-from src.trainer.base_trainer import TrainerConfig
-
-
-class PipeStepConfig(object):
-    """Default Pipeline config for Pipe Step."""
-
-    dataset = DatasetConfig
-    search_algorithm = SearchAlgorithmConfig
-    search_space = SearchSpaceConfig
-    model = ModelConfig
-    trainer = TrainerConfig
-    #evaluator = EvaluatorConfig  #TODO
-    pipe_step = {}
-
 
 class PipeStep(object):
     """PipeStep is the base components class that can be added in Pipeline."""

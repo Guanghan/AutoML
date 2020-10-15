@@ -10,6 +10,7 @@ import glog as log
 import torch
 
 from src.core.class_factory import ClassType, ClassFactory
+from src.core.default_config import TrainerConfig
 
 from src.utils.utils_log import init_log
 from src.utils.read_configure import Config, class2config, desc2config
@@ -17,38 +18,12 @@ from src.utils.utils_io_folder import create_folder, copy_folder
 
 from src.trainer.base_worker import Worker
 from src.trainer.base_callback_list import CallbackList
-from src.trainer.optimizer import Optimizer, OptimConfig
-from src.trainer.lr_scheduler import LrScheduler, LrSchedulerConfig
-from src.trainer.loss import Loss, LossConfig
-from src.trainer.metrics import Metrics, MetricsConfig
+from src.trainer.optimizer import Optimizer
+from src.trainer.lr_scheduler import LrScheduler
+from src.trainer.loss import Loss
+from src.trainer.metrics import Metrics
 
 from src.search_space.description import NetworkDesc
-
-
-class TrainerConfig(object):
-    """Default Trainer Config."""
-    # GPU
-    cuda = True
-    device = cuda if cuda is not True else 0
-    # Model
-    pretrained_model_file = None
-    save_model_desc = False
-    # Report
-    report_freq = 10
-    # Training
-    seed = 0
-    epochs = 1
-    optim = OptimConfig
-    lr_scheduler = LrSchedulerConfig
-    metric = MetricsConfig
-    loss = LossConfig
-    # Validation
-    with_valid = True
-    valid_interval = 1
-
-    callbacks = None
-    grad_clip = None
-    model_statistics = True
 
 
 @ClassFactory.register(ClassType.TRAINER)

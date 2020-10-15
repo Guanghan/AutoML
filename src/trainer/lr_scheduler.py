@@ -6,17 +6,8 @@
 """
 import glog as log
 from src.core.class_factory import ClassFactory, ClassType
+from src.core.default_config import LrSchedulerConfig
 from src.utils.read_configure import class2config
-
-
-class LrSchedulerConfig(object):
-    """Default LrScheduler Config."""
-
-    _class_type = "trainer.lr_scheduler"
-    _update_all_attrs = True
-    _exclude_keys = ['type']
-    type = 'MultiStepLR'
-    params = {"milestones": [75, 150], "gamma": 0.5}
 
 
 class LrScheduler(object):

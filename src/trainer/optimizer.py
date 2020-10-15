@@ -6,17 +6,8 @@
 """
 import glog as log
 from src.core.class_factory import ClassFactory, ClassType
+from src.core.default_config import OptimConfig
 from src.utils.read_configure import class2config
-
-
-class OptimConfig(object):
-    """Default Optim Config."""
-
-    _class_type = "trainer.optim"
-    _exclude_keys = ['type']
-    _update_all_attrs = True
-    type = 'Adam'
-    params = {"lr": 0.1}
 
 
 class Optimizer(object):

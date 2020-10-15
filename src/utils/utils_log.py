@@ -35,8 +35,6 @@ class General(object):
     backend = 'pytorch'
     device_category = 'GPU'
     env = None
-    model_zoo = ModelZoo
-    cluster_mode = ClusterMode.LocalCluster
     calc_params_each_epoch = False
 
 

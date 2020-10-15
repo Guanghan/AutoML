@@ -13,27 +13,6 @@ from src.utils.read_configure import Config, class2config
 from src.utils.utils_dict import update_dict
 
 
-class DatasetConfig(object):
-    """Default Dataset config for Pipeline."""
-
-    type = "Cifar10"
-    _class_type = ClassType.DATASET
-
-
-class BaseConfig(object):
-    """Base config of dataset."""
-
-    data_path = None
-    batch_size = 1
-    num_workers = 0
-    imgs_per_gpu = 1,
-    shuffle = False
-    download = False
-    pin_memory = True
-    drop_last = True
-    transforms = []
-
-
 class Dataset(Task):
     """This is the base class of the dataset, which is a subclass of `TaskOps`.
 

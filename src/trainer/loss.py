@@ -8,18 +8,9 @@ import glog as log
 from inspect import isclass
 from functools import partial
 from src.core.class_factory import ClassFactory, ClassType
+from src.core.default_config import LossConfig
 from src.utils.read_configure import class2config
 from src.trainer.base_trainer import TrainerConfig
-
-class LossConfig(object):
-    """Default Loss Config."""
-
-    _class_type = "trainer.loss"
-    _exclude_keys = ['type']
-    _update_all_attrs = True
-    type = 'CrossEntropyLoss'
-    params = {}
-
 
 class Loss(object):
     """Register and call loss class."""

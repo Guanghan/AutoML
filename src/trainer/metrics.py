@@ -14,15 +14,6 @@ from src.utils.read_configure import Config, class2config
 from src.core.class_factory import ClassFactory, ClassType
 
 
-class MetricsConfig(object):
-    """Default Metrics Config."""
-
-    _class_type = "trainer.metric"
-    _update_all_attrs = True
-    type = 'accuracy'
-    params = {}
-
-
 class MetricBase(object):
     """Provide base metrics class for all custom metric to implement."""
 
