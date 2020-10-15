@@ -66,8 +66,8 @@ class DifferentialAlgorithm(SearchAlgorithm):
         """Init arch optimizer."""
         optim_config = self.config.arch_optim.copy()
         optim_name = optim_config.pop('type')
-        optim_class = getattr(
-            importlib.import_module('torch.optim'), optim_name)
+        optim_class = getattr(importlib.import_module('torch.optim'),
+                              optim_name)
         learnable_params = model.arch_parameters()
         optimizer = optim_class(learnable_params, **optim_config)
         return optimizer
@@ -79,7 +79,7 @@ class DifferentialAlgorithm(SearchAlgorithm):
         loss_class = getattr(importlib.import_module('torch.nn'), loss_name)
         return loss_class(**loss_config)
 
-    def forword_step(self, train_x=None, train_y=None, valid_x=None, valid_y=None,
+    def step(self, train_x=None, train_y=None, valid_x=None, valid_y=None,
              lr=None, w_optimizer=None, w_loss=None, unrolled=None, scope_name=None):
         """Compute one step."""
         self.optimizer.zero_grad()
@@ -87,11 +87,6 @@ class DifferentialAlgorithm(SearchAlgorithm):
         loss.backward()
         self.optimizer.step()
         return
-
-    def backward_step(self, input_valid, target_valid):
-        """Compute one backprop step."""
-        loss = self.loss(self.model(input_valid), target_valid)
-        loss.backward()
 
     def search(self):
         """Search function."""

@@ -1,4 +1,4 @@
-pipeline: [nas]
+pipeline: [nas, fully_train]
 
 nas:
     pipe_step:
@@ -99,3 +99,34 @@ nas:
         seed: 10
         unrolled: True
 
+fully_train:
+    pipe_step:
+        type: FullyTrainPipeStep
+        models_folder: "{local_base_path}/output/nas/"
+    model:
+        model_desc_file: '{local_output_path}/nas/model_desc_1.json'
+
+    trainer:
+        ref: nas.trainer
+        callbacks: DartsFullTrainer
+        epochs: 6
+        lr_scheduler:
+            type: CosineAnnealingLR
+            params:
+                T_max: 600.0
+        loss:
+            type: MixAuxiliaryLoss
+            params:
+                loss_base:
+                    type: torch.nn.CrossEntropyLoss
+                aux_weight: 0.4
+        warmup_epochs: 0
+        drop_path_prob: 0.2
+
+    dataset:
+        type: Cifar10
+        common:
+            num_workers: 32
+            batch_size: 96
+        train:
+            cutout_length: 8

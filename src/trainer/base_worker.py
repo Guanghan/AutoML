@@ -35,7 +35,7 @@ class Worker(Task):
     __general__ = None
 
     def __init__(self, args=None):
-        """Init DistributedWorker."""
+        """Init Worker."""
         super().__init__()
         # privates
         Worker.__worker_id__ += 1

@@ -7,11 +7,22 @@
 from src.core.class_factory import ClassFactory, ClassType
 from src.utils.read_configure import class2config
 
+
 class SearchSpaceConfig(object):
     """Default Search Space config for Pipeline."""
 
     _type_name = ClassType.SEARCH_SPACE
     type = None
+
+
+class ModelConfig(object):
+    """Default Model config for Pipeline."""
+
+    _type_name = ClassType.SEARCH_SPACE
+    type = None
+    model_desc = None
+    model_desc_file = None
+    model_file = None
 
 
 @ClassFactory.register(ClassType.SEARCH_SPACE)

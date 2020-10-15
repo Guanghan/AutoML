@@ -25,6 +25,7 @@ class DartsTrainer(Callback):
         """Be called before the training process."""
         # search algorithm
         self.search_alg = SearchAlgorithm(SearchSpace().search_space)
+        self.unrolled = self.trainer.config.unrolled
 
         # model
         self.model = self.trainer.model
@@ -46,10 +47,23 @@ class DartsTrainer(Callback):
 
     def before_train_step(self, epoch, logs=None):
         """Be called before a batch training."""
+        # Get current train batch directly from logs
+        train_batch = logs['train_batch']
+        train_input, train_target = train_batch
         val_input, val_target = next(self.val_loader_iter)
         val_input, val_target = val_input.to(self.device), val_target.to(self.device)
+
         # Call arch search step
         self._train_arch_step(train_input, train_target, val_input, val_target)
+
+    def _train_arch_step(self, train_input, train_target, valid_input, valid_target):
+        lr = self.lr_scheduler.get_lr()[0]
+        self.search_alg.step(train_input, train_target, valid_input, valid_target,
+                             lr, self.optimizer, self.loss, self.unrolled)
+
+    # [train_step] using default from base_trainer, no need to inherit
+
+    # [after_train_step] using default from base_trainer, no need to inherit
 
     def after_epoch(self, epoch, logs=None):
         """Be called after each epoch."""
@@ -60,10 +74,15 @@ class DartsTrainer(Callback):
 
     def after_train(self, logs=None):
         """Be called after Training."""
+        self.trainer._backup()
 
     def _get_arch_weights(self):
         """Get trained alpha params."""
         return self.model.arch_weights
+
+    def _set_algorithm_model(self, model):
+        """ Choose model to search architecture for."""
+        self.search_alg.set_model(model)
 
     def _save_descript(self):
         """Save result description."""
@@ -83,7 +102,3 @@ class DartsTrainer(Callback):
         model_desc.super_network.normal.genotype = genotypes[0]
         model_desc.super_network.reduce.genotype = genotypes[1]
         return model_desc
-
-    def _set_algorithm_model(self, model):
-        """ Choose model to search architecture for."""
-        self.search_alg.set_model(model)

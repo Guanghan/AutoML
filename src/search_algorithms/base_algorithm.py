@@ -12,6 +12,14 @@ from src.core.base_task import Task
 from src.utils.read_configure import desc2config
 from src.search_space.base_codec import Codec
 
+
+class SearchAlgorithmConfig(object):
+    """Default Search Algorithm config for Pipeline."""
+
+    _class_type = ClassType.SEARCH_ALGORITHM
+    type = None
+
+
 class SearchAlgorithm(Task):
     """SearchAlgorithm the base class for user defined search algorithms.
 

@@ -161,3 +161,4 @@ class ClassFactory(object):
             if not isclass(_cls) and not isfunction(_cls):
                 continue
             ClassFactory.register_cls(_cls, type_name)
+

@@ -132,7 +132,7 @@ class DartsNetwork(Network):
                                  self.alphas_reduce,]
 
     def arch_parameters(self):
-        """Abstract base function of getting arch parameters."""
+        """Abstract base function of getting learnable arch parameters."""
         return self._arch_parameters
 
     @property

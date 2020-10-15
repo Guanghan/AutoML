@@ -9,9 +9,8 @@ import glog as logger
 
 logger.setLevel('INFO')
 
-from src.utils.read_configure import Config, desc2config
+from src.utils.read_configure import Config
 from src.core.class_factory import ClassFactory, ClassType
-from src.core.base_pipestep import PipeStepConfig
 
 
 class Pipeline(object):
@@ -31,42 +30,47 @@ class Pipeline(object):
         Args:
             config_path: full path to config file
         """
-        # register customized classes for usage
+        # register available classes for usage
         self.__register__()
 
         # load config file (to choose particular class)
         self.config = Config(config_path)
 
     def __register__(self):
-        """ Register customized classes
+        """ Register available classes
 
-            @ClassFactory.register(ClassType.SEARCH_ALGORITHM)
-            class my_NAS(object):
-                def run(self):
-                    print("Customized neural architecture search algorithm.")
         """
-        pass
+        @ClassFactory.register(ClassType.SEARCH_ALGORITHM)
+        class my_NAS(object):
+            def run(self):
+                print("Running neural architecture search algorithm.")
+
+        @ClassFactory.register(ClassType.SEARCH_SPACE)
+        class my_space(object):
+            def run(self):
+                print("Running space search definition")
+
+        @ClassFactory.register(ClassType.DATASET)
+        class COCO(object):
+            def run(self):
+                print("Running COCO dataset initialization")
+
+        @ClassFactory.register(ClassType.DATASET)
+        class CIFAR(object):
+            def run(self):
+                print("Running CIFAR dataset initialization")
 
     def run(self):
         """ Run the pipeline
 
         """
-        # attach overall config to ClassFactory
+        # attach config to ClassFactory
         ClassFactory.attach_config_to_factory(self.config)
 
-        procedures = ["nas"]
+        procedures = ['search_algorithm', 'search_space', 'dataset']
         for procedure in procedures:
-            # get configuration for each step
-            step_cfg = self.config.get(procedure)
-
-            # set current step's config to ClassFactory
-            ClassFactory().attach_config_to_factory(step_cfg)
-
-            # load Config form current step description
-            desc2config(config_dst=PipeStepConfig, desc_src=step_cfg)
-
             # get corresponding class given an attribute
-            step_cls = ClassFactory.get_cls(ClassType.PIPE_STEP)
+            step_cls = ClassFactory.get_cls(procedure)
 
             # instantiate corresponding class
             step = step_cls()
@@ -76,5 +80,5 @@ class Pipeline(object):
 
 
 if __name__ == '__main__':
-    pipeline = Pipeline('../../configs/darts.yaml')
+    pipeline = Pipeline('../../configs/example.yaml')
     pipeline.run()
