@@ -75,8 +75,8 @@ class MetricsEvaluator(Callback):
             # Get the summary of valid metrics
             metrics_results = self.valid_metrics.results
 
-            for key, value in metrics_results.items():
-                metrics_results[key] = self.trainer._metric_average(value, key)
+            #for key, value in metrics_results.items():
+            #    metrics_results[key] = self.trainer._metric_average(value, key)
 
             self.cur_valid_perfs = metrics_results
             logs.update({'cur_valid_perfs': self.cur_valid_perfs})
