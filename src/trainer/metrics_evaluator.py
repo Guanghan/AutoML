@@ -50,13 +50,9 @@ class MetricsEvaluator(Callback):
     def after_train_step(self, batch_index, logs=None):
         """Be called after each train batch."""
         input, target = self.train_batch
-        if self.trainer.config.is_detection_trainer:
-            self.cur_loss = logs['loss']
-            self.loss_avg = self.cur_loss
-        else:
-            batch_size = input.size(0)
-            self.cur_loss = logs['loss']
-            self.loss_avg = self._average_loss(batch_size, self.cur_loss)
+        batch_size = input.size(0)
+        self.cur_loss = logs['loss']
+        self.loss_avg = self._average_loss(batch_size, self.cur_loss)
         output = logs['train_batch_output']
         if self.train_metrics is not None and self.trainer.call_metrics_on_train:
             self.train_metrics(output, target)
