@@ -95,6 +95,7 @@ class Trainer(Worker):
         self.make_batch = None
         self.callbacks = None
         self.performance = None
+        self.call_metrics_on_train = self.config.call_metrics_on_train
 
         self.model_desc = {}
         self.visual_data = {}
