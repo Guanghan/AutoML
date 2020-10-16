@@ -422,3 +422,10 @@ class Trainer(Worker):
         self.callbacks.after_valid(valid_logs)
 
 
+    def _should_run_validation(self, epoch):
+        # Zero valid_interval means doesn't run _valid_loop of the trainer
+        # and user may provide _valid_loop in other callbacks
+        if self.valid_interval == 0:
+            return False
+        else:
+            return epoch % self.valid_interval == 0 or (epoch + 1) == self.epochs
