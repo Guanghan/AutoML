@@ -45,7 +45,6 @@ class ProgressLogger(Callback):
         """Be called before the training process."""
         logging.debug("Start the unified trainer ... ")
         self.epochs = self.params['epochs']
-        self.is_chief = self.params['is_chief']
         self.do_validation = self.params['do_validation']
 
     def before_epoch(self, epoch, logs=None):
@@ -57,7 +56,7 @@ class ProgressLogger(Callback):
 
     def after_train_step(self, batch_index, logs=None):
         """Be called before each batch training."""
-        if self.train_verbose >= 2 and self.is_chief \
+        if self.train_verbose >= 2 \
                 and batch_index % self.train_report_steps == 0:
             metrics_results = logs.get('train_step_metrics', None)
             try:
@@ -87,7 +86,7 @@ class ProgressLogger(Callback):
 
     def after_valid_step(self, batch_index, logs=None):
         """Be called after each batch of the validation."""
-        if self.valid_verbose >= 2 and self.is_chief \
+        if self.valid_verbose >= 2 \
                 and self.do_validation and batch_index % self.valid_report_steps == 0:
             metrics_results = logs.get('valid_step_metrics', None)
             if metrics_results is not None:
@@ -101,7 +100,7 @@ class ProgressLogger(Callback):
 
     def after_valid(self, logs=None):
         """Be called after validation."""
-        if (self.valid_verbose >= 1 and self.is_chief and self.do_validation):
+        if (self.valid_verbose >= 1 and self.do_validation):
             cur_valid_perfs = logs.get('cur_valid_perfs', None)
             if cur_valid_perfs is not None:
                 log_info = "worker id [{}], epoch [{}/{}], current valid perfs {}".format(
