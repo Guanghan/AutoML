@@ -43,7 +43,8 @@ class CallbackList(object):
         #defaults = ["ModelStatistics", "MetricsEvaluator", "ModelCheckpoint", "PerformanceSaver",
         #            "LearningRateScheduler", "ProgressLogger", "ReportCallback"]
         defaults = ["PerformanceSaver",
-                    "LearningRateScheduler"]
+                    "LearningRateScheduler",
+                    "ProgressLogger"]
         custom_disables = []
         disables = disables if disables else []
         customs = customs if customs else []
