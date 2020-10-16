@@ -15,3 +15,4 @@ from src.trainer.classifier_metrics import *
 from src.trainer.lr_scheduler_callback import *
 from src.trainer.pf_saver_callback import *
 from src.trainer.progress_logger import *
+from src.trainer.metrics_evaluator import *
