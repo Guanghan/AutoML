@@ -12,6 +12,7 @@ import json
 from copy import deepcopy
 from src.core.class_factory import ClassType, ClassFactory, NetworkType
 from src.utils.read_configure import Config, desc2config
+import glog as log
 
 
 class NetworkDesc(object):
@@ -19,8 +20,10 @@ class NetworkDesc(object):
 
     def __init__(self, desc):
         """Init NetworkDesc."""
-        self._desc = Config()
-        desc2config(config_dst=self._desc, desc_src=desc)
+        #self._desc = Config()
+        #desc2config(config_dst=self._desc, desc_src=desc)
+        self._desc = desc
+        log.info("In NetworkDesc, the network description is: {}".format(self._desc))
         self._model_type = None
         self._model_name = None
 

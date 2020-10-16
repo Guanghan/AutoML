@@ -5,7 +5,7 @@
 @file_desc: Nas Pipe Step defined in Pipeline.
 """
 import time
-import glog as logging
+import glog as log
 from copy import deepcopy
 
 from src.core.base_pipestep import PipeStep
@@ -24,26 +24,34 @@ class NasPipeStep(PipeStep):
     def __init__(self):
         """Initialize."""
         super().__init__()
+        log.info("Initialize Generator.")
         self.generator = Generator()
 
     def run(self):
         """Do the main task in this pipe step."""
-        logging.debug("NasPipeStep started...")
+        log.info("NasPipeStep started...")
         while not self.generator.is_completed:
             samples = self.generator.sample()
             if samples:
                 for (id_ele, desc) in samples:
+                    log.info("desc: {}".format(desc))
+
                     # model
                     if "modules" in desc:
                         PipeStepConfig.model.model_desc = deepcopy(desc)
+                        log.info("PipeStep's model config: {}".format(PipeStepConfig.model.__dict__))
                     elif "network" in desc:
                         origin_desc = PipeStepConfig.model.model_desc
                         desc = update_dict(desc["network"], origin_desc)
+                        log.info("PipeStep's network config: {}".format(desc["Network"]))
+
                     model = NetworkDesc(desc).to_model()
+                    log.info("Model: {}".format(model))
 
                     # trainer
                     cls_trainer = ClassFactory.get_cls('trainer')
                     trainer = cls_trainer(model, hps=desc)
+                    log.info("Using trainer: {}".format(type(trainer).__name__))
                     trainer.train_process()
             else:
                 time.sleep(0.5)

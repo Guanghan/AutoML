@@ -6,19 +6,28 @@
 """
 import glog as log
 from src.core.class_factory import ClassFactory, ClassType
-from src.utils.read_configure import class2config
-import copy
+from src.utils.read_configure import class2config, Config
+
+from src.core.default_config import OptimConfig
+assert OptimConfig.params == {'lr': 0.1}
+
+
+class DefaultOptimConfig(object):
+    _class_type = "trainer.optim"
+    _exclude_keys = ['type']
+    _update_all_attrs = True
+    type = 'Adam'
+    params = {"lr": 0.1}
+
 
 class Optimizer(object):
     """Register and call Optimizer class."""
 
+    #config = OptimConfig()
+    config = DefaultOptimConfig()
+
     def __init__(self):
         """Initialize."""
-        from src.core.default_config import OptimConfig
-        self.config = copy.deepcopy(OptimConfig())
-        print(self.config)
-
-        print(OptimConfig)
         optim_name = self.config.type
         self.optim_cls = ClassFactory.get_cls(ClassType.OPTIM, optim_name)
 
@@ -31,7 +40,10 @@ class Optimizer(object):
         Return:
             optimizer
         """
-        params = class2config(self.config).get("params", {})
+        #params = class2config(self.config).get("params", {})
+        dst_config = class2config(Config(), self.config)
+        params = dst_config.get("params", {})
+
         log.info("Calling Optimizer. name={}, params={}".format(self.optim_cls.__name__, params))
         optimizer = None
         try:

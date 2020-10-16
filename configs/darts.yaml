@@ -81,7 +81,7 @@ nas:
 
     trainer:
         type: Trainer
-        darts_template_file: "{default_darts_cifar10_template}"
+        darts_template_file: "src/baselines/darts_cifar10.json"
         callbacks: DartsTrainer
         epochs: 1
         optim:

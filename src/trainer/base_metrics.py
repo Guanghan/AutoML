@@ -1,6 +1,6 @@
 """
 @author: Guanghan Ning
-@file: metrics.py
+@file: base_metrics.py
 @time: 10/14/20 5:12 下午
 @file_desc: Base class for metrics. All metric classes are implemented with this base class.
 """
@@ -9,7 +9,7 @@ from functools import partial
 from inspect import isfunction
 from copy import deepcopy
 
-from src.trainer import metrics as metrics
+from src.trainer import base_metrics as metrics
 from src.utils.read_configure import Config, class2config
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import MetricsConfig
@@ -72,7 +72,12 @@ class Metrics(object):
     def __init__(self, metric_cfg=None):
         """Init Metrics."""
         self.mdict = {}
-        metric_config = class2config(self.config) if not metric_cfg else deepcopy(metric_cfg)
+        #metric_config = class2config(self.config) if not metric_cfg else deepcopy(metric_cfg)
+        if not metric_cfg:
+            metric_config = class2config(Config(), self.config)
+        else:
+            metric_config = deepcopy(metric_cfg)
+
         if not isinstance(metric_config, list):
             metric_config = [metric_config]
         for metric_item in metric_config:

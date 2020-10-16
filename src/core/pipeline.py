@@ -35,6 +35,7 @@ class Pipeline(object):
         self.__register__()
 
         # load config file (to choose particular class)
+        log.info("Loading configuration from file: {}".format(config_path))
         self.config = Config(config_path)
 
     def __register__(self):
@@ -55,18 +56,19 @@ class Pipeline(object):
         """ Run the pipeline
 
         """
-        # attach overall config to ClassFactory [all classes into __registry__]
-        ClassFactory.attach_config_to_factory(self.config)
-
         procedures = ["nas"]
+
         for procedure in procedures:
             # get configuration for each step
+            log.info("Select configuration for procedure: {}".format(procedure))
             step_cfg = self.config.get(procedure)
 
             # set current step's config to ClassFactory [class into __registry__]
+            log.info("Set {} config to ClassFactory [class into __registry__]".format(procedure))
             ClassFactory().attach_config_to_factory(step_cfg)
 
-            # load Config form current step description [description into __config__]
+            # load Config from current step description [description into __config__]
+            log.info("load config from {} description [description into __config__]".format(procedure))
             desc2config(config_dst=PipeStepConfig, desc_src=step_cfg)
 
             # get corresponding class given an attribute
@@ -78,6 +80,7 @@ class Pipeline(object):
             step = step_cls()
 
             # run step
+            log.info("Running step: {}".format(type(step).__name__))
             step.run()
 
 

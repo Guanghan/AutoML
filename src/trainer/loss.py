@@ -9,8 +9,9 @@ from inspect import isclass
 from functools import partial
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import LossConfig
-from src.utils.read_configure import class2config
+from src.utils.read_configure import class2config, Config
 from src.trainer.base_trainer import TrainerConfig
+
 
 class Loss(object):
     """Register and call loss class."""
@@ -25,7 +26,10 @@ class Loss(object):
 
     def __call__(self):
         """Call loss cls."""
-        params = class2config(self.config).get("params", {})
+        #params = class2config(self.config).get("params", {})
+        dst_config = Config()
+        class2config(config_dst=dst_config, class_src=self.config)
+        params = dst_config.get("params", {})
         log.info("Call Loss. name={}, params={}".format(self._cls.__name__, params))
         try:
             if params:

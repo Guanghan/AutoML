@@ -29,6 +29,7 @@ class DartsTrainer(Callback):
 
         # model
         self.model = self.trainer.model
+        print("self.model = {}".format(self.trainer.model))
         self._set_algorithm_model(self.model)
 
         # trainer

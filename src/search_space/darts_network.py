@@ -26,16 +26,16 @@ class DartsNetwork(Network):
         """Init DartsNetwork."""
         super(DartsNetwork, self).__init__()
         self.desc = desc
-        self.network = desc.network
-        self._C = desc.init_channels
-        self._classes = desc.num_classes
-        self.input_size = desc.input_size
-        self._auxiliary = desc.auxiliary
-        self.search = desc.search
+        self.network = desc["network"]
+        self._C = desc["init_channels"]
+        self._classes = desc["num_classes"]
+        self.input_size = desc["input_size"]
+        self._auxiliary = desc["auxiliary"]
+        self.search = desc["search"]
         self.drop_path_prob = 0
         if self._auxiliary:
-            self._aux_size = desc.aux_size
-            self._auxiliary_layer = desc.auxiliary_layer
+            self._aux_size = desc["aux_size"]
+            self._auxiliary_layer = desc["auxiliary_layer"]
         self.build_network()
 
     def build_network(self):
@@ -60,7 +60,7 @@ class DartsNetwork(Network):
         """
         stem_desc = {'C': self._C, 'stem_multi': 3}
         stem_class = ClassFactory.get_cls(NetworkType.BLOCK, stem)
-        self.stem = stem_class(Config(stem_desc))
+        self.stem = stem_class(stem_desc)
         return self.stem.C_curr
 
     def _network_cells(self, network_list, C_curr):
@@ -116,13 +116,13 @@ class DartsNetwork(Network):
         }
         cell_type = self.desc[name]['type']
         cell_name = self.desc[name]['name']
-        cell_class = ClassFactory.get_cls(NetworkType[cell_type], cell_name)
-        return cell_class(Config(cell_desc))
+        cell_class = ClassFactory.get_cls(cell_type, cell_name)
+        return cell_class(cell_desc)
 
     def _initialize_alphas(self):
         """Initialize architecture parameters."""
-        k = len(self.desc.normal.genotype)
-        num_ops = len(self.desc.normal.genotype[0][0])
+        k = len(self.desc["normal"]["genotype"])
+        num_ops = len(self.desc["normal"]["genotype"][0][0])
         # TODO: why not using register_parameter if requiring gradient?
         self.register_buffer('alphas_normal',
                              (1e-3 * torch.randn(k, num_ops)).cuda().requires_grad_())

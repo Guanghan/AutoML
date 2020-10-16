@@ -40,7 +40,8 @@ class Dataset(Task):
         if kwargs:
             self.args = Config(kwargs)
         if hasattr(self, 'config'):
-            config = class2config(None, getattr(self.config, self.mode))
+            config = Config()
+            config = class2config(config_dst=config, class_src=getattr(self.config, self.mode))
             config.update(self.args)
             self.args = config
         self._init_hps(hps)

@@ -129,5 +129,5 @@ class Generator(object):
             hps_dict = update_dict(hps_dict, hp_dict, [])
 
         hps_config = Config()
-        dict2config(config_dst=hps_config, dict_src=hps_dict)
+        hps_config = dict2config(config_dst=hps_config, dict_src=hps_dict)
         return hps_config

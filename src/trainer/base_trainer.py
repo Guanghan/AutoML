@@ -21,14 +21,45 @@ from src.trainer.base_callback_list import CallbackList
 from src.trainer.optimizer import Optimizer
 from src.trainer.lr_scheduler import LrScheduler
 from src.trainer.loss import Loss
-from src.trainer.metrics import Metrics
+from src.trainer.base_metrics import Metrics
 
 from src.search_space.description import NetworkDesc
+from src.core.default_config import OptimConfig, LrSchedulerConfig, MetricsConfig, LossConfig
+from src.trainer.darts import DartsTrainer
+
+
+class DefaultTrainerConfig(object):
+    """Default Trainer Config."""
+    # GPU
+    cuda = True
+    device = cuda if cuda is not True else 0
+    # Model
+    pretrained_model_file = None
+    save_model_desc = False
+    # Report
+    report_freq = 10
+    # Training
+    seed = 0
+    epochs = 1
+    optim = OptimConfig()
+    lr_scheduler = LrSchedulerConfig()
+    metric = MetricsConfig()
+    loss = LossConfig()
+    # Validation
+    with_valid = True
+    valid_interval = 1
+
+    callbacks = None
+    grad_clip = None
+    model_statistics = True
+    callbacks = DartsTrainer
+    darts_template_file = "src/baselines/baseline_darts.json"
 
 
 @ClassFactory.register(ClassType.TRAINER)
 class Trainer(Worker):
-    config = TrainerConfig()
+    #config = TrainerConfig()
+    config = DefaultTrainerConfig()
 
     def __init__(self, model=None, hps=None, load_ckpt_flag=False, **kwargs):
         super(Trainer, self).__init__()
@@ -80,11 +111,14 @@ class Trainer(Worker):
 
         After training, the model and validation results are saved to local_worker_path and s3_path.
         """
-        self.log = init_log("info", log_file="worker.txt")
-        self.log.info("Use the unified Trainer")
+        log = init_log("info", log_file="worker.txt")
 
+        log.info("Start training process, building components (optimizer, lr_scheduler, etc.)")
         self.build(model=self.model, hps=self.hps)
+
         self._init_callbacks(self.callbacks)
+        log.info("Trainer's callbacks: {}".format(self.callbacks))
+
         self._train_loop()
 
     def build(self, model=None, optimizer=None, loss=None,
@@ -95,11 +129,12 @@ class Trainer(Worker):
               model_pickle_file_name="model.pkl"):
         """Build the trainer by assembling the necessary components."""
         # Initialize hyper-parameters by parameters or configurations
-        self._init_hps(hps)
+        log.info("Init Trainer config with HPS config: {}".format(hps))
+        self.config = self._init_hps(hps)
+
         trainer_config = Config()
-        class2config(config_dst=trainer_config, class_src=self.config)
-        self.log.info("Trainer Config: {}".format(trainer_config))
-        self.log.info("Trainer Config: {}".format(self.config))
+        trainer_config = class2config(config_dst=trainer_config, class_src=self.config)
+        log.info("Trainer config: {}".format(trainer_config))
 
         self.checkpoint_file_name = checkpoint_file_name
         self.model_pickle_file_name = model_pickle_file_name
@@ -117,9 +152,7 @@ class Trainer(Worker):
         self.train_loader = self._init_dataloader(mode='train', loader=train_loader)
         self.valid_loader = self._init_dataloader(mode='val', loader=valid_loader)
 
-        print("optimizer: {}".format(optimizer))
-        self.optimizer = Optimizer()(model=self.model) \
-            if optimizer is None else optimizer
+        self.optimizer = Optimizer()(model=self.model) if optimizer is None else optimizer
         self.loss = Loss()() if loss is None else loss
         self.lr_scheduler = LrScheduler()(self.optimizer) if lr_scheduler is None else lr_scheduler
 
@@ -198,8 +231,13 @@ class Trainer(Worker):
         """Load hyper-parameter search config from file."""
         if hps is not None:
             self.hps = hps
+        elif self.config.hps_file is not None:
+            desc_file = self.config.hps_file.replace("{local_base_path}", self.local_base_path)
+            self.hps = Config(desc_file)
+
         if self.hps and self.hps.get('trainer'):
-            desc2config(config_dst=self.config, desc_src=self.hps.get('trainer'))
+            self.config = desc2config(config_dst=self.config, desc_src=self.hps.get('trainer'))
+        return self.config
 
     def _init_model(self, model=None):
         """Load model desc from save path and parse to model."""

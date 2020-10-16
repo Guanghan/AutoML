@@ -53,7 +53,7 @@ class SearchAlgorithm(Task):
         if self.config and kwargs:
             self.config = self.config() #TODO
             desc2config(self.config, kwargs)
-        log.info("Config=%s", self.config)
+        log.info("Search algorithm config check.")
 
         self.search_space = search_space
 
