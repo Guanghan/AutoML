@@ -7,9 +7,10 @@
 
 import copy
 import numpy as np
-from src.utils.read_configure import dict2config
+from src.utils.read_configure import dict2config, Config
 from src.core.class_factory import ClassType, ClassFactory
 from src.search_space.base_codec import Codec
+
 
 @ClassFactory.register(ClassType.CODEC)
 class DartsCodec(Codec):
@@ -19,10 +20,11 @@ class DartsCodec(Codec):
     def __init__(self, search_space=None, **kwargs):
         super().__init__(search_space, **kwargs)
         self.darts_cfg = copy.deepcopy(search_space)
-        super_net_dict = {'normal': self.darts_cfg.super_network.normal.genotype,
-                          'reduce': self.darts_cfg.super_network.reduce.genotype}
+        self.super_net = Config()
+        super_net_dict = {'normal': self.darts_cfg["super_network"]["normal"]["genotype"],
+                          'reduce': self.darts_cfg["super_network"]["reduce"]["genotype"]}
         dict2config(self.super_net, super_net_dict)
-        self.steps = self.darts_cfg.super_network.normal.steps
+        self.steps = self.darts_cfg["super_network"]["normal"]["steps"]
 
     def decode(self, arch_param):
         """ Decode the alphas params to network description

@@ -7,6 +7,7 @@
 
 from src.core.class_factory import ClassType, ClassFactory
 
+
 class Codec(object):
     """
     The base class for compress/decompress algorithms
@@ -16,10 +17,13 @@ class Codec(object):
         if cls.__name__ != 'Codec':
             # if base codec, create instance
             return super().__new__(cls)
+
+        if kwargs.get('type'):
+            t_cls = ClassFactory.get_cls(ClassType.CODEC, kwargs.pop('type'))
         else:
             # if inherited codec, create corresponding instance based on registered class in class factory
             t_cls = ClassFactory.get_cls(ClassType.CODEC)
-            return super().__new__(t_cls)
+        return super().__new__(t_cls)
 
     def __init__(self, search_space=None, **kwargs):
         self.search_space = search_space

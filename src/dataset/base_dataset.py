@@ -40,7 +40,7 @@ class Dataset(Task):
         if kwargs:
             self.args = Config(kwargs)
         if hasattr(self, 'config'):
-            config = class2config(getattr(self.config, self.mode))
+            config = class2config(None, getattr(self.config, self.mode))
             config.update(self.args)
             self.args = config
         self._init_hps(hps)
@@ -69,12 +69,12 @@ class Dataset(Task):
             a batch of data (dict, list, optional)
         """
         data_loader = torch_data.DataLoader(self,
-                                            batch_size=self.args.batch_size,
-                                            shuffle=self.args.shuffle,
-                                            num_workers=self.args.num_workers,
-                                            pin_memory=self.args.pin_memory,
+                                            batch_size=self.args["batch_size"],
+                                            shuffle=self.args["shuffle"],
+                                            num_workers=self.args["num_workers"],
+                                            pin_memory=self.args["pin_memory"],
                                             sampler=self.sampler,
-                                            drop_last=self.args.drop_last)
+                                            drop_last=self.args["drop_last"])
         return data_loader
 
     @property
@@ -96,11 +96,11 @@ class Dataset(Task):
         """
         if "transforms" in self.args.keys():
             transforms = list()
-            if not isinstance(self.args.transforms, list):
-                self.args.transforms = [self.args.transforms]
-            for i in range(len(self.args.transforms)):
-                transform_name = self.args.transforms[i].pop("type")
-                kwargs = self.args.transforms[i]
+            if not isinstance(self.args["transforms"], list):
+                self.args["transforms"] = [self.args["transforms"]]
+            for i in range(len(self.args["transforms"])):
+                transform_name = self.args["transforms"][i].pop("type")
+                kwargs = self.args["transforms"][i]
                 if ClassFactory.is_exists(ClassType.TRANSFORM, transform_name):
                     transforms.append(ClassFactory.get_cls(ClassType.TRANSFORM, transform_name)(**kwargs))
                 else:

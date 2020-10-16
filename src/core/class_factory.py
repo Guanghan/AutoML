@@ -12,6 +12,8 @@ class ClassType(object):
     """Const class: saved defined class type."""
     # general: logger, GPU, work time, etc.
     GENERAL = 'general'
+    # Pipeline
+    PIPE_STEP = 'pipe_step'
     # NAS and HPO
     SEARCH_ALGORITHM = 'search_algorithm'
     CODEC = 'search_algorithm.codec'

@@ -6,7 +6,7 @@
 """
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import SearchSpaceConfig
-from src.utils.read_configure import class2config
+from src.utils.read_configure import class2config, Config
 
 
 @ClassFactory.register(ClassType.SEARCH_SPACE)
@@ -23,4 +23,5 @@ class SearchSpace(object):
     @property
     def search_space(self):
         """Get hyper parameters."""
-        return class2config(self.config)
+        ss_config = Config()
+        return class2config(ss_config, self.config)

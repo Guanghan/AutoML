@@ -66,12 +66,9 @@ class Trainer(Worker):
         self.load_ckpt_flag = load_ckpt_flag
         self.checkpoint_file_name = 'checkpoint.pth'
         self.model_pickle_file_name = 'model.pkl'
-        self.model_path = os.path.join(self.get_local_worker_path(),
-                                       self.model_pickle_file_name)
-        self.checkpoint_file = os.path.join(self.get_local_worker_path(),
-                                            self.checkpoint_file_name)
-        self.weights_file = os.path.join(self.get_local_worker_path(),
-                                         "model.pth")
+        self.model_path = os.path.join(self.model_pickle_file_name)
+        self.checkpoint_file = os.path.join(self.checkpoint_file_name)
+        self.weights_file = os.path.join("model.pth")
 
         # Indicate whether the necessary components of a trainer
         # has been built for running
@@ -102,6 +99,7 @@ class Trainer(Worker):
         trainer_config = Config()
         class2config(config_dst=trainer_config, class_src=self.config)
         self.log.info("Trainer Config: {}".format(trainer_config))
+        self.log.info("Trainer Config: {}".format(self.config))
 
         self.checkpoint_file_name = checkpoint_file_name
         self.model_pickle_file_name = model_pickle_file_name
@@ -119,7 +117,8 @@ class Trainer(Worker):
         self.train_loader = self._init_dataloader(mode='train', loader=train_loader)
         self.valid_loader = self._init_dataloader(mode='val', loader=valid_loader)
 
-        self.optimizer = Optimizer()(model=self.model, distributed=self.distributed) \
+        print("optimizer: {}".format(optimizer))
+        self.optimizer = Optimizer()(model=self.model) \
             if optimizer is None else optimizer
         self.loss = Loss()() if loss is None else loss
         self.lr_scheduler = LrScheduler()(self.optimizer) if lr_scheduler is None else lr_scheduler

@@ -5,11 +5,11 @@
 @file_desc: Nas Pipe Step defined in Pipeline.
 """
 import time
-import traceback
 import glog as logging
 from copy import deepcopy
 
-from src.core.base_pipestep import PipeStep, PipeStepConfig
+from src.core.base_pipestep import PipeStep
+from src.core.default_config import PipeStepConfig
 from src.core.class_factory import ClassFactory, ClassType
 from src.utils.utils_dict import update_dict
 from src.search_space.description import NetworkDesc

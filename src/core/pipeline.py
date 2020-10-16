@@ -5,13 +5,13 @@
 @file_desc: The AutoML pipeline
 """
 
-import glog as logger
+import glog as log
 
-logger.setLevel('INFO')
+log.setLevel('INFO')
 
 from src.utils.read_configure import Config, desc2config
 from src.core.class_factory import ClassFactory, ClassType
-from src.core.base_pipestep import PipeStepConfig
+from src.core.default_config import PipeStepConfig
 
 
 class Pipeline(object):
@@ -39,11 +39,15 @@ class Pipeline(object):
 
     def __register__(self):
         """ Register customized classes
-
+            Example 1:
             @ClassFactory.register(ClassType.SEARCH_ALGORITHM)
             class my_NAS(object):
                 def run(self):
                     print("Customized neural architecture search algorithm.")
+
+            Example 2:
+            from src.dataset.cifar10 import Cifar10
+            ClassFactory.register(Cifar10, ClassType.DATASET)
         """
         pass
 
@@ -51,7 +55,7 @@ class Pipeline(object):
         """ Run the pipeline
 
         """
-        # attach overall config to ClassFactory
+        # attach overall config to ClassFactory [all classes into __registry__]
         ClassFactory.attach_config_to_factory(self.config)
 
         procedures = ["nas"]
@@ -59,13 +63,15 @@ class Pipeline(object):
             # get configuration for each step
             step_cfg = self.config.get(procedure)
 
-            # set current step's config to ClassFactory
+            # set current step's config to ClassFactory [class into __registry__]
             ClassFactory().attach_config_to_factory(step_cfg)
 
-            # load Config form current step description
+            # load Config form current step description [description into __config__]
             desc2config(config_dst=PipeStepConfig, desc_src=step_cfg)
 
             # get corresponding class given an attribute
+            log.info("__config__ = {}\n".format(ClassFactory.__configs__))
+            log.info("__registry__ = {}\n".format(ClassFactory.__registry__))
             step_cls = ClassFactory.get_cls(ClassType.PIPE_STEP)
 
             # instantiate corresponding class

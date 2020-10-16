@@ -11,7 +11,7 @@ from src.search_algorithms.base_algorithm import SearchAlgorithm
 from src.search_space.search_space import SearchSpace
 #from vega.core.report import Report, ReportRecord
 
-from src.utils.read_configure import Config
+from src.utils.read_configure import Config, dict2config
 from src.utils.utils_dict import update_dict
 
 
@@ -79,7 +79,7 @@ class Generator(object):
         #    desc = self._decode_hps(record.desc)
         #    out.append((record.worker_id, desc))
         #return out
-            desc = self._decode_hps(sample[1])
+            desc = self._decode_hps(sample['desc'])
             out.append((0, desc))
         return out
 
@@ -127,4 +127,7 @@ class Generator(object):
                     hp_dict = {key: value}
             # update cfg with hps
             hps_dict = update_dict(hps_dict, hp_dict, [])
-        return Config(hps_dict)
+
+        hps_config = Config()
+        dict2config(config_dst=hps_config, dict_src=hps_dict)
+        return hps_config

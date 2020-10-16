@@ -12,7 +12,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from src.dataset.base_dataset import Dataset
 from src.dataset.transforms import Compose
 from src.core.class_factory import ClassFactory, ClassType
-from src.dataset.base_dataset import BaseConfig
+from src.core.default_config import BaseConfig
 
 
 class Cifar10CommonConfig(BaseConfig):
@@ -83,8 +83,8 @@ class Cifar10(CIFAR10, Dataset):
     def __init__(self, **kwargs):
         """Construct the Cifar10 class."""
         Dataset.__init__(self, **kwargs)
-        CIFAR10.__init__(self, root=self.args.data_path, train=self.train,
-                         transform=Compose(self.transforms.__transform__), download=self.args.download)
+        CIFAR10.__init__(self, root=self.args["data_path"], train=self.train,
+                         transform=Compose(self.transforms.__transform__), download=self.args["download"])
 
     @property
     def input_channels(self):
@@ -115,12 +115,12 @@ class Cifar10(CIFAR10, Dataset):
             a sampler method
             if the mode is test, return None, else return a sampler object
         """
-        if self.mode == 'test' or self.args.train_portion == 1:
+        if self.mode == 'test' or self.args["train_portion"] == 1:
             return None
-        self.args.shuffle = False
+        self.args["shuffle"] = False
         num_train = 50000
         indices = list(range(num_train))
-        split = int(np.floor(self.args.train_portion * num_train))
+        split = int(np.floor(self.args["train_portion"] * num_train))
         if self.mode == 'train':
             return SubsetRandomSampler(indices[:split])
         elif self.mode == 'val':

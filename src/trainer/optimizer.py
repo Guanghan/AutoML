@@ -6,29 +6,30 @@
 """
 import glog as log
 from src.core.class_factory import ClassFactory, ClassType
-from src.core.default_config import OptimConfig
 from src.utils.read_configure import class2config
-
+import copy
 
 class Optimizer(object):
     """Register and call Optimizer class."""
 
-    config = OptimConfig()
-
     def __init__(self):
         """Initialize."""
-        # register pytorch/tensorflow optim as default
+        from src.core.default_config import OptimConfig
+        self.config = copy.deepcopy(OptimConfig())
+        print(self.config)
+
+        print(OptimConfig)
         optim_name = self.config.type
         self.optim_cls = ClassFactory.get_cls(ClassType.OPTIM, optim_name)
 
-    def __call__(self, model=None, lr_scheduler=None, epoch=None, distributed=False):
+    def __call__(self, model=None):
         """Call Optimizer class.
 
-        :param model: model, used in torch case
-        :param lr_scheduler: learning rate scheduler, used in tf case
-        :param epoch: epoch of training, used in tf case
-        :param distributed: use distributed
-        :return: optimizer
+        Arguments:
+            model: model, used in torch case
+
+        Return:
+            optimizer
         """
         params = class2config(self.config).get("params", {})
         log.info("Calling Optimizer. name={}, params={}".format(self.optim_cls.__name__, params))
@@ -44,4 +45,5 @@ class Optimizer(object):
 
 # register all public classes from pytorch's optimizer
 import torch.optim as optimizer_package
+
 ClassFactory.register_from_package(optimizer_package, ClassType.OPTIM)

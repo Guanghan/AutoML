@@ -19,12 +19,10 @@ class Config(dict):
         Args:
             yaml_path: the path to the yaml configuration file
         """
-        #super(Config, self).__init__()  # if python2
         super().__init__()
         if yaml_path is not None:
             assert (yaml_path.endswith('.yaml') or yaml_path.endswith('.yml'))
             with open(yaml_path) as file:
-                # yaml load example: http://zetcode.com/python/yaml/
                 raw_dict = yaml.load(file, Loader=yaml.FullLoader)
                 dict2config(self, raw_dict)
 
@@ -41,20 +39,29 @@ def dict2config(config_dst: Config, dict_src: dict, is_clear = False):
 
     # clear all attrs
     if is_clear:
-        for attr_name in dir(config_dst):
+        from copy import deepcopy
+        config_copy = deepcopy(config_dst)
+        for attr_name in dir(config_copy):
             if attr_name.startswith('_'):
                 continue
-            delattr(config_dst, attr_name)
+            delattr(config_copy, attr_name)
+        class2config(config_dst, config_copy)
 
     # add attributes from dict_src to config_dst
     if isinstance(dict_src, dict):
         for key, value in dict_src.items():
-            if isinstance(value, dict):
+            if isinstance(value, dict) and value != {}:
                 sub_config = Config()
                 dict2config(sub_config, value)
-                dict.__setitem__(config_dst, key, sub_config)
+                if isinstance(config_dst, dict):
+                    dict.__setitem__(config_dst, key, sub_config)
+                elif isclass(config_dst):
+                    config_dst.key = sub_config
             else:
-                config_dst[key] = dict_src[key]
+                if isinstance(config_dst, dict):
+                    config_dst[key] = dict_src[key]
+                elif isclass(config_dst):
+                    config_dst.key = dict_src[key]
 
 
 def class2config(config_dst: Config, class_src: object):
@@ -65,7 +72,7 @@ def class2config(config_dst: Config, class_src: object):
 
     """
     if not config_dst:
-        config = Config()
+        config_dst = Config()
     if isinstance(class_src, dict):
         log.info('In class2config, the given class is actually a dictionary.')
         dict_src = class_src
@@ -84,9 +91,9 @@ def class2config(config_dst: Config, class_src: object):
                 continue
         attr_value = getattr(class_src, attr_name)
         if isinstance(attr_value, type):
-            attr_value = class2config(attr_value)
-        config[attr_name] = attr_value
-    return copy.deepcopy(config)
+            attr_value = class2config(None, attr_value)
+        config_dst[attr_name] = attr_value
+    return copy.deepcopy(config_dst)
 
 
 def desc2config(config_dst: Config, desc_src: dict):
@@ -108,9 +115,10 @@ def desc2config(config_dst: Config, desc_src: dict):
             # use key as type_name
             sub_config_cls = getattr(config_dst, key)
             # Get config object dynamically according to type
-            if not isinstance(sub_config_cls, dict) and hasattr(
-                    sub_config_cls, '_class_type') and value and value.get('type'):
-                ref_cls = ClassFactory.get_cls(sub_config_cls._class_type, value.type)
+            if not isinstance(sub_config_cls, dict) \
+                    and hasattr(sub_config_cls, '_class_type') \
+                    and value and value.get('type'):
+                ref_cls = ClassFactory.get_cls(sub_config_cls._class_type, value['type'])
                 if hasattr(ref_cls, 'config') and ref_cls.config and not isclass(ref_cls.config):
                     sub_config_cls = type(ref_cls.config)
             if not isclass(sub_config_cls) or value is None:

@@ -7,7 +7,7 @@ nas:
     dataset:
         type: Cifar10
         common:
-            data_path: /cache/datasets/cifar10/
+            data_path: /data/cifar10/
             batch_size: 64
             train_portion: 0.5
 

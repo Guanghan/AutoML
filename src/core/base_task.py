@@ -30,15 +30,7 @@ tasks/[task_id]/
 import os
 from datetime import datetime
 from src.utils.utils_io_folder import create_folder
-
-class TaskConfig(dict):
-    """Task Config."""
-
-    task_id = datetime.now().strftime('%m%d.%H%M%S.%f')[:-3]
-    base_path = "./tasks"
-    log_folder = "logs"
-    output_folder = "output"
-    best_model_folder = "best_model"
+from src.core.default_config import TaskConfig, GeneralConfig
 
 
 class Task(object):
@@ -46,8 +38,7 @@ class Task(object):
         """Init Task class"""
         self.task_cfg = TaskConfig()
         self.task_id = task_id if task_id is not None else self.task_cfg.task_id
-        self.step_name = step_name if step_name is not None else self.task_cfg.step_name
-        self.worker_id = worker_id if worker_id is not None else self.task_cfg.worker_id
+        self.step_name = step_name if step_name is not None else GeneralConfig.step_name
 
     @property
     def task_id_property(self):

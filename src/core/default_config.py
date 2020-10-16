@@ -5,9 +5,8 @@
 @file_desc: Default Config for all classes, to prevent circular dependent imports
 """
 
-from src.core.class_factory import ClassType, ClassFactory
-
-
+from src.core.class_factory import ClassType
+from datetime import datetime
 
 
 class DatasetConfig(object):
@@ -29,6 +28,7 @@ class BaseConfig(object):
     pin_memory = True
     drop_last = True
     transforms = []
+
 
 class SearchAlgorithmConfig(object):
     """Default Search Algorithm config for Pipeline."""
@@ -74,7 +74,7 @@ class MetricsConfig(object):
 
 
 class OptimConfig(object):
-    """Default Optim Config."""
+    """Default Optimizer Config."""
 
     _class_type = "trainer.optim"
     _exclude_keys = ['type']
@@ -127,5 +127,33 @@ class PipeStepConfig(object):
     search_space = SearchSpaceConfig
     model = ModelConfig
     trainer = TrainerConfig
-    #evaluator = EvaluatorConfig  #TODO
     pipe_step = {}
+
+
+class TaskConfig(dict):
+    """Task Config."""
+
+    task_id = datetime.now().strftime('%m%d.%H%M%S.%f')[:-3]
+    base_path = "./tasks"
+    log_folder = "logs"
+    output_folder = "output"
+    best_model_folder = "best_model"
+
+
+class ModelZoo(object):
+    """Model Zoo Config."""
+
+    model_zoo_path = None
+
+
+class GeneralConfig(object):
+    """General Config."""
+
+    task = TaskConfig
+    step_name = None
+    worker_id = None
+    backend = 'pytorch'
+    device_category = 'GPU'
+    env = None
+    model_zoo = ModelZoo
+    calc_params_each_epoch = False
