@@ -8,7 +8,7 @@ import logging
 import numpy as np
 from collections.abc import Iterable
 from .base_callback import Callback
-from vega.core.common.class_factory import ClassFactory, ClassType
+from src.core.class_factory import ClassFactory, ClassType
 
 
 @ClassFactory.register(ClassType.CALLBACK)
