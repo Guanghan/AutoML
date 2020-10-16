@@ -113,6 +113,9 @@ class TrainerConfig(object):
     # Validation
     with_valid = True
     valid_interval = 1
+    # evaluation
+    perfs_cmp_mode = None
+    perfs_cmp_key = None
 
     callbacks = None
     grad_clip = None

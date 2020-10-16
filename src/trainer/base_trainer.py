@@ -46,6 +46,9 @@ class DefaultTrainerConfig(object):
     # Validation
     with_valid = True
     valid_interval = 1
+    # evaluation
+    perfs_cmp_mode = None
+    perfs_cmp_key = None
 
     grad_clip = None
     #model_statistics = True
