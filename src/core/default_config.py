@@ -116,6 +116,7 @@ class TrainerConfig(object):
     # evaluation
     perfs_cmp_mode = None
     perfs_cmp_key = None
+    call_metrics_on_train = True
 
     callbacks = None
     grad_clip = None

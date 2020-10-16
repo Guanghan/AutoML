@@ -49,6 +49,7 @@ class DefaultTrainerConfig(object):
     # evaluation
     perfs_cmp_mode = None
     perfs_cmp_key = None
+    call_metrics_on_train = True
 
     grad_clip = None
     #model_statistics = True
