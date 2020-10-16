@@ -12,6 +12,8 @@ from src.core.class_factory import ClassFactory, ClassType
 class Callback(object):
     """Abstract class for building new callbacks."""
 
+    priority = 100
+
     def __init__(self):
         """Init callback object."""
         self.trainer = None

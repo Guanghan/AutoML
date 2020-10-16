@@ -13,6 +13,7 @@ from src.core.class_factory import NetworkType, ClassFactory
 from src.search_space.base_network import Network
 from src.utils.read_configure import Config
 
+
 @ClassFactory.register(NetworkType.SUPER_NETWORK)
 class DartsNetwork(Network):
     """Base Darts Network of classification.
@@ -153,7 +154,7 @@ class DartsNetwork(Network):
         s0, s1 = self.stem(input)
         for i, cell in enumerate(self.cells):
             if self.search:
-                if self.desc.network[i + 1] == 'reduce':
+                if self.desc["network"][i + 1] == 'reduce':
                     weights = F.softmax(self.alphas_reduce, dim=-1)
                 else:
                     weights = F.softmax(self.alphas_normal, dim=-1)

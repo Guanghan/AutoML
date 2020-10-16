@@ -23,6 +23,8 @@ class DartsTrainer(Callback):
 
     def before_train(self, logs=None):
         """Be called before the training process."""
+        self.device = self.trainer.config.device
+
         # search algorithm
         self.search_alg = SearchAlgorithm(SearchSpace().search_space)
         self.unrolled = self.trainer.config.unrolled

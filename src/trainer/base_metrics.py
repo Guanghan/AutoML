@@ -89,7 +89,7 @@ class Metrics(object):
             else:
                 metric_class = metric_class(**metric_item.get("params", {}))
             self.mdict[metric_name] = metric_class
-        self.mdict = Config(self.mdict)
+        #self.mdict = Config(self.mdict)
 
     def __call__(self, output=None, target=None, *args, **kwargs):
         """Calculate all supported metrics by using output and target.

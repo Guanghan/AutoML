@@ -73,13 +73,17 @@ class Generator(object):
         for sample in res:
             if isinstance(sample, tuple):
                 sample = dict(worker_id=sample[0], desc=sample[1])
+                import glog as log
+                log.info("sample['desc']: {}".format(sample['desc']))
         #    record = self.record.load_dict(sample)
         #    logging.debug("Broadcast Record=%s", str(record))
         #    Report().broadcast(record)
         #    desc = self._decode_hps(record.desc)
         #    out.append((record.worker_id, desc))
         #return out
-            desc = self._decode_hps(sample['desc'])
+            #desc = self._decode_hps(sample['desc'])
+            desc = sample['desc']
+            log.info("desc: {}".format(desc))
             out.append((0, desc))
         return out
 
@@ -126,7 +130,8 @@ class Generator(object):
                 else:
                     hp_dict = {key: value}
             # update cfg with hps
-            hps_dict = update_dict(hps_dict, hp_dict, [])
+            #hps_dict = update_dict(hps_dict, hp_dict, [])
+            hps_dict = update_dict(hp_dict, hps_dict, [])
 
         hps_config = Config()
         hps_config = dict2config(config_dst=hps_config, dict_src=hps_dict)

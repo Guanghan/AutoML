@@ -48,6 +48,7 @@ class LrScheduler(object):
             log.error("Failed to call LrScheduler name={}, params={}".format(self._cls.__name__, params))
             raise ex
 
+
 # register all public classes from pytorch's lr_scheduler
 import torch.optim.lr_scheduler as lr_scheduler_package
 ClassFactory.register_from_package(lr_scheduler_package, ClassType.LR_SCHEDULER)

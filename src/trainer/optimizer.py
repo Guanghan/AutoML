@@ -59,3 +59,4 @@ class Optimizer(object):
 import torch.optim as optimizer_package
 
 ClassFactory.register_from_package(optimizer_package, ClassType.OPTIM)
+print("loaded SGD")

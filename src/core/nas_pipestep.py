@@ -32,6 +32,7 @@ class NasPipeStep(PipeStep):
         log.info("NasPipeStep started...")
         while not self.generator.is_completed:
             samples = self.generator.sample()
+            log.info("samples: {}".format(samples))
             if samples:
                 for (id_ele, desc) in samples:
                     log.info("desc: {}".format(desc))

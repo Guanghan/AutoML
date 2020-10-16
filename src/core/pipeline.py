@@ -56,6 +56,8 @@ class Pipeline(object):
         """ Run the pipeline
 
         """
+        ClassFactory.attach_config_to_factory(self.config)
+
         procedures = ["nas"]
 
         for procedure in procedures:
@@ -86,4 +88,5 @@ class Pipeline(object):
 
 if __name__ == '__main__':
     pipeline = Pipeline('../../configs/darts.yaml')
+    #pipeline = Pipeline('configs/darts.yaml')
     pipeline.run()

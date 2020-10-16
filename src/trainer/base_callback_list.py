@@ -40,8 +40,10 @@ class CallbackList(object):
                     raise ValueError("Multiple valid_step are defined!")
 
     def _get_callbacks(self, customs, disables):
-        defaults = ["ModelStatistics", "MetricsEvaluator", "ModelCheckpoint", "PerformanceSaver",
-                    "LearningRateScheduler", "ProgressLogger", "ReportCallback"]
+        #defaults = ["ModelStatistics", "MetricsEvaluator", "ModelCheckpoint", "PerformanceSaver",
+        #            "LearningRateScheduler", "ProgressLogger", "ReportCallback"]
+        defaults = ["PerformanceSaver",
+                    "LearningRateScheduler"]
         custom_disables = []
         disables = disables if disables else []
         customs = customs if customs else []
@@ -64,7 +66,7 @@ class CallbackList(object):
     def _set_params(self, trainer):
         params = {
             'epochs': trainer.epochs,
-            'is_chief': trainer.is_chief,
+            #'is_chief': trainer.is_chief,
             'use_cuda': trainer.use_cuda,
             'do_validation': trainer.do_validation,
         }

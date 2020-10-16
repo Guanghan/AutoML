@@ -31,6 +31,7 @@ def dict2config(config_dst: Config, dict_src: dict, is_clear = False):
     """ Convert dictionary to config.
 
     Args:
+        is_clear:
         config_dst: Config obj to save info to
         dict_src: dict obj to load info from
     """
@@ -128,3 +129,4 @@ def desc2config(config_dst: Config, desc_src: dict):
                     dict2config(sub_config_cls, value, is_clear=True)
                 else:
                     desc2config(sub_config_cls, value)
+    return copy.deepcopy(config_dst)

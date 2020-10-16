@@ -8,8 +8,9 @@
 import importlib
 from src.core.class_factory import ClassType, ClassFactory
 from src.search_algorithms.base_algorithm import SearchAlgorithm
-from src.trainer.base_trainer import TrainerConfig
+from src.core.default_config import TrainerConfig
 from src.search_space.description import NetworkDesc
+
 
 class DifferentialConfig(object):
     """Config for Differential."""

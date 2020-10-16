@@ -10,7 +10,6 @@ import glog as log
 import torch
 
 from src.core.class_factory import ClassType, ClassFactory
-from src.core.default_config import TrainerConfig
 
 from src.utils.utils_log import init_log
 from src.utils.read_configure import Config, class2config, desc2config
@@ -24,8 +23,7 @@ from src.trainer.loss import Loss
 from src.trainer.base_metrics import Metrics
 
 from src.search_space.description import NetworkDesc
-from src.core.default_config import OptimConfig, LrSchedulerConfig, MetricsConfig, LossConfig
-from src.trainer.darts import DartsTrainer
+from src.core.default_config import OptimConfig, LrSchedulerConfig, MetricsConfig, LossConfig, TrainerConfig
 
 
 class DefaultTrainerConfig(object):
@@ -49,17 +47,19 @@ class DefaultTrainerConfig(object):
     with_valid = True
     valid_interval = 1
 
-    callbacks = None
     grad_clip = None
-    model_statistics = True
-    callbacks = DartsTrainer
+    #model_statistics = True
+    model_statistics = False
+    callbacks = None
+    #callbacks = [DartsTrainer]
     darts_template_file = "src/baselines/baseline_darts.json"
+    lr_adjustment_position = 'after_epoch'
 
 
 @ClassFactory.register(ClassType.TRAINER)
 class Trainer(Worker):
-    #config = TrainerConfig()
-    config = DefaultTrainerConfig()
+    config = TrainerConfig()
+    #config = DefaultTrainerConfig()
 
     def __init__(self, model=None, hps=None, load_ckpt_flag=False, **kwargs):
         super(Trainer, self).__init__()
@@ -116,6 +116,7 @@ class Trainer(Worker):
         log.info("Start training process, building components (optimizer, lr_scheduler, etc.)")
         self.build(model=self.model, hps=self.hps)
 
+        log.info("self.config.callbacks: {}".format(self.config.callbacks))
         self._init_callbacks(self.callbacks)
         log.info("Trainer's callbacks: {}".format(self.callbacks))
 
@@ -163,7 +164,11 @@ class Trainer(Worker):
         if self.callbacks is None:
             self.callbacks = callbacks
 
-        cur_working_dir = os.path.join(self.local_output_path, self.step_name)
+        if self.step_name:
+            cur_working_dir = os.path.join("output", self.step_name)
+        else:
+            cur_working_dir = os.path.join("output", "default_nas")
+
         create_folder(cur_working_dir)
         # Make sure Trainer has been built for training
         self.is_built = True

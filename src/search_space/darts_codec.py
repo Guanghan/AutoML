@@ -10,6 +10,7 @@ import numpy as np
 from src.utils.read_configure import dict2config, Config
 from src.core.class_factory import ClassType, ClassFactory
 from src.search_space.base_codec import Codec
+import glog as log
 
 
 @ClassFactory.register(ClassType.CODEC)
@@ -20,6 +21,7 @@ class DartsCodec(Codec):
     def __init__(self, search_space=None, **kwargs):
         super().__init__(search_space, **kwargs)
         self.darts_cfg = copy.deepcopy(search_space)
+        log.info("self.darts_cfg: {}".format(self.darts_cfg))
         self.super_net = Config()
         super_net_dict = {'normal': self.darts_cfg["super_network"]["normal"]["genotype"],
                           'reduce': self.darts_cfg["super_network"]["reduce"]["genotype"]}

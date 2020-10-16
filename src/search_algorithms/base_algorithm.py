@@ -9,7 +9,7 @@ log.setLevel("INFO")
 
 from src.core.class_factory import ClassType, ClassFactory
 from src.core.base_task import Task
-from src.utils.read_configure import desc2config
+from src.utils.read_configure import desc2config, Config
 from src.search_space.base_codec import Codec
 
 
@@ -51,9 +51,9 @@ class SearchAlgorithm(Task):
 
         # modify config by kwargs in local scope
         if self.config and kwargs:
-            self.config = self.config() #TODO
-            desc2config(self.config, kwargs)
-        log.info("Search algorithm config check.")
+            #self.config = self.config()
+            self.config = desc2config(Config(), kwargs)
+        log.info("Search algorithm config check. self.config = {}".format(dir(self.config)))
 
         self.search_space = search_space
 

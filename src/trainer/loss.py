@@ -10,7 +10,7 @@ from functools import partial
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import LossConfig
 from src.utils.read_configure import class2config, Config
-from src.trainer.base_trainer import TrainerConfig
+from src.core.default_config import TrainerConfig
 
 
 class Loss(object):
