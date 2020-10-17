@@ -16,7 +16,7 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && \
   python get-pip.py && \
   rm get-pip.py
 
-RUN pip --no-cache-dir install -f https://download.pytorch.org/whl/cu100/torch_stable.html
+RUN pip --no-cache-dir install torch torchvision -f https://download.pytorch.org/whl/cu100/torch_stable.html
 
 # install pip packages from requirement
 COPY requirements.txt /home/requirements.txt

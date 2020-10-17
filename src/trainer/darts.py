@@ -110,6 +110,6 @@ class DartsTrainer(Callback):
     def _gen_model_desc(self, genotypes, template):
         """update template supernet description with given genotypes."""
         model_desc = deepcopy(template)
-        model_desc.super_network.normal.genotype = genotypes[0]
-        model_desc.super_network.reduce.genotype = genotypes[1]
+        model_desc["super_network"]["normal"]["genotype"] = genotypes[0]
+        model_desc["super_network"]["reduce"]["genotype"] = genotypes[1]
         return model_desc
