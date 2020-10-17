@@ -87,6 +87,6 @@ class Pipeline(object):
 
 
 if __name__ == '__main__':
-    pipeline = Pipeline('../../configs/darts.yaml')
-    #pipeline = Pipeline('configs/darts.yaml')
+    #pipeline = Pipeline('../../configs/darts.yaml')
+    pipeline = Pipeline('configs/darts.yaml')
     pipeline.run()

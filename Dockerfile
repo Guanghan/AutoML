@@ -22,9 +22,11 @@ RUN pip --no-cache-dir install torch torchvision -f https://download.pytorch.org
 COPY requirements.txt /home/requirements.txt
 RUN pip --no-cache-dir install -r /home/requirements.txt
 
-COPY ../AutoML /home/AutoML-IU
+COPY src /home/AutoML-IU/src
+COPY configs /home/AutoML-IU/configs
 
 # set WorkingDir
 WORKDIR /home/AutoML-IU
+ENV PYTHONPATH=$PYTHONPATH:/home/AutoML-IU
 
 ENTRYPOINT bash
