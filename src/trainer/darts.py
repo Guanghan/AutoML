@@ -13,7 +13,7 @@ from src.core.class_factory import ClassFactory, ClassType
 from src.search_algorithms.base_algorithm import SearchAlgorithm
 from src.search_space.search_space import SearchSpace
 from src.trainer.base_callback import Callback
-from src.utils.read_configure import desc2config
+from src.utils.read_configure import desc2config, Config
 from src.utils.utils_json import read_json_from_file
 
 
@@ -101,7 +101,8 @@ class DartsTrainer(Callback):
         # load a template supernet description to modify on
         template_path = os.path.join(os.path.dirname(__file__), "../../src/baselines/baseline_darts.json")
         descript_dict = read_json_from_file(template_path)
-        template = desc2config(descript_dict)
+        template = Config()
+        template = desc2config(template, desc_src=descript_dict)
         # only replace the genotypes on the template description
         model_desc = self._gen_model_desc(genotypes, template)
         self.trainer.config.codec = model_desc
