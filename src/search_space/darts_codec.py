@@ -82,8 +82,8 @@ class DartsCodec(Codec):
                 n += 1
             return gene
 
-        normal_param = np.array(self.darts_cfg.super_net.normal.genotype)
-        reduce_param = np.array(self.darts_cfg.super_net.reduce.genotype)
+        normal_param = np.array(self.darts_cfg["super_network"]["normal"]["genotype"])
+        reduce_param = np.array(self.darts_cfg["super_network"]["reduce"]["genotype"])
         geno_normal = _parse(arch_param[0], normal_param[:, 0])
         geno_reduce = _parse(arch_param[1], reduce_param[:, 0])
         return geno_normal, geno_reduce
