@@ -17,12 +17,14 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && \
   rm get-pip.py
 
 RUN pip --no-cache-dir install torch torchvision -f https://download.pytorch.org/whl/cu100/torch_stable.html
+RUN pip --no-cache-dir install sphinx sphinxcontrib-napoleon
 
 # install pip packages from requirement
 COPY requirements.txt /home/requirements.txt
 RUN pip --no-cache-dir install -r /home/requirements.txt
 
 COPY src /home/AutoML-IU/src
+COPY doc /home/AutoML-IU/doc
 COPY configs /home/AutoML-IU/configs
 
 # set WorkingDir
