@@ -99,7 +99,7 @@ class DartsTrainer(Callback):
         # get genotypes from trained alpha params (softmax to crisp)
         genotypes = self.search_alg.codec.calc_genotype(self._get_arch_weights())
         # load a template supernet description to modify on
-        template_path = os.path.join(os.path.dirname(__file__), "src/baselines/baseline_darts.json")
+        template_path = os.path.join(os.path.dirname(__file__), "../../src/baselines/baseline_darts.json")
         descript_dict = read_json_from_file(template_path)
         template = desc2config(descript_dict)
         # only replace the genotypes on the template description
