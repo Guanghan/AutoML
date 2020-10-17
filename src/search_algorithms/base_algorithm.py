@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_algorithm.py
-@time: 10/8/20 11:23 下午
+@time: 10/8/20 11:23
 @file_desc: Base search algorithm class. Search algorithms (e.g., darts) inherit from this algorithm.
 """
 import glog as log

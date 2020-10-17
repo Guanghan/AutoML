@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: description.py
-@time: 10/7/20 12:27 上午
+@time: 10/7/20 12:27
 @file_desc: Description of networks.
 """
 

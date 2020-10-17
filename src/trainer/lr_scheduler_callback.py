@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: lr_scheduler_callback.py
-@time: 10/16/20 1:59 上午
+@time: 10/16/20 1:59
 @file_desc: LearningRateScheduler callback.
 """
 

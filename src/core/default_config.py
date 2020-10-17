@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: default_config.py
-@time: 10/15/20 1:14 下午
+@time: 10/15/20 1:14
 @file_desc: Default Config for all classes, to prevent circular dependent imports
 """
 

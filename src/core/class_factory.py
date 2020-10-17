@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: class_factory.py
-@time: 10/1/20 11:16 下午
+@time: 10/1/20 11:16
 @file_desc: Register classes so that a class can be instantiated via config file;
             no need to know explicitly which one.
 """

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: ps_cell.py
-@time: 10/15/20 11:39 下午
+@time: 10/15/20 11:39
 @file_desc: parameter-sharing (ps) cells.
 """
 import torch

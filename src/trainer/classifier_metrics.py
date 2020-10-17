@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: classifier_metrics.py
-@time: 10/16/20 12:19 上午
+@time: 10/16/20 12:19
 @file_desc: Metric of classification tasks.
 """
 from .base_metrics import MetricBase

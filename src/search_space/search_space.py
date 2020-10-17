@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: search_space.py
-@time: 10/9/20 3:30 下午
+@time: 10/9/20 3:30
 @file_desc:
 """
 from src.core.class_factory import ClassFactory, ClassType

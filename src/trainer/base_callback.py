@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_callback.py
-@time: 10/9/20 2:43 下午
+@time: 10/9/20 2:43
 @file_desc: Callbacks called at certain points of a trainer.
 """
 

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: utils_dict.py
-@time: 10/14/20 8:44 下午
+@time: 10/14/20 8:44
 @file_desc: Utilities related to dictionary
 """
 

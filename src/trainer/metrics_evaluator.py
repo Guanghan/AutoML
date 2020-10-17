@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: metrics_evaluator.py
-@time: 10/16/20 11:27 上午
+@time: 10/16/20 11:27
 @file_desc: Evaluator.
 """
 from copy import deepcopy

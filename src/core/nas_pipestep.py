@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: nas_pipestep.py
-@time: 10/14/20 8:42 下午
+@time: 10/14/20 8:42
 @file_desc: Nas Pipe Step defined in Pipeline.
 """
 import time

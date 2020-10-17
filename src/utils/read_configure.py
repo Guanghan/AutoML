@@ -13,7 +13,7 @@ class Config(dict):
     Config class inherit from dict.
     It can parse arguments from a yaml file.
     """
-    def __init__(self, yaml_path: str = None):
+    def __init__(self, yaml_path = None):
         """ A Config class inherited from dict
 
         Args:
@@ -27,7 +27,7 @@ class Config(dict):
                 dict2config(self, raw_dict)
 
 
-def dict2config(config_dst: Config, dict_src: dict, is_clear = False):
+def dict2config(config_dst, dict_src, is_clear = False):
     """ Convert dictionary to config.
 
     Args:
@@ -65,7 +65,7 @@ def dict2config(config_dst: Config, dict_src: dict, is_clear = False):
                     config_dst.key = dict_src[key]
 
 
-def class2config(config_dst: Config, class_src: object):
+def class2config(config_dst, class_src):
     """Convert obj to config.
 
     Args:
@@ -97,7 +97,7 @@ def class2config(config_dst: Config, class_src: object):
     return copy.deepcopy(config_dst)
 
 
-def desc2config(config_dst: Config, desc_src: dict):
+def desc2config(config_dst, desc_src):
     """ Convert description (dictionary) to config.
 
     Args:

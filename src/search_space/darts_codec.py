@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: darts_codec.py
-@time: 10/6/20 10:37 下午
+@time: 10/6/20 10:37
 @file_desc:
 """
 

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: darts_network.py
-@time: 10/7/20 12:06 上午
+@time: 10/7/20 12:06
 @file_desc: DARTS super net
 """
 

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: transforms.py
-@time: 10/14/20 9:22 下午
+@time: 10/14/20 9:22
 @file_desc: This is a class for Transforms.
 """
 from src.core.class_factory import ClassFactory, ClassType

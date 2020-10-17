@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: differentiable_algorithm.py
-@time: 10/8/20 11:33 下午
+@time: 10/8/20 11:33
 @file_desc: Differentiable gradient method for neural architecture search (first proposed in DARTS)
 """
 

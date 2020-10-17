@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: cifar10.py
-@time: 10/14/20 11:09 下午
+@time: 10/14/20 11:09
 @file_desc: class for Cifar10 dataset.
 """
 import numpy as np

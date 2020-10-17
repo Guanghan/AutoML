@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_trainer.py
-@time: 10/9/20 2:43 下午
+@time: 10/9/20 2:43
 @file_desc:
 """
 import os

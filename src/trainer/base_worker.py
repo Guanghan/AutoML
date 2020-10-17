@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_worker.py
-@time: 10/9/20 7:26 下午
+@time: 10/9/20 7:26
 @file_desc: Base worker for training and evaluating.
 
 It is the basic class of other workers, e.g., TrainWorker and EvaluatorWork.

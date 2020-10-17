@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: generator.py
-@time: 10/14/20 10:23 下午
+@time: 10/14/20 10:23
 @file_desc: Generator for NasPipeStep."""
 
 import glog as logging

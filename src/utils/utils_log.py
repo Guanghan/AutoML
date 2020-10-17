@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: utils_log.py
-@time: 10/14/20 10:06 上午
+@time: 10/14/20 10:06
 @file_desc: logging related utilities
 """
 

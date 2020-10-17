@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_callback_list.py
-@time: 10/9/20 2:44 下午
+@time: 10/9/20 2:44
 @file_desc: Handle a list of Callbacks called at certain points of trainer."""
 
 from src.core.class_factory import ClassFactory, ClassType

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: pipeline.py
-@time: 10/2/20 6:55 下午
+@time: 10/2/20 6:55
 @file_desc: The AutoML pipeline
 """
 

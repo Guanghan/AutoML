@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: pf_saver_callback.py
-@time: 10/16/20 2:03 上午
+@time: 10/16/20 2:03
 @file_desc: Performance Saver callback.
 """
 import logging
@@ -33,7 +33,7 @@ class PerformanceSaver(Callback):
         """Be called after the training epoch."""
         logging.debug("train record: saver performance after epoch run successes.")
         self.summary_perfs = logs.get('summary_perfs', {})
-        if not (self.is_chief and self.save_after_epoch):
+        if not self.save_after_epoch:
             return
         best_changed = logs.get('best_valid_perfs_changed', False)
         if self.save_best and best_changed:

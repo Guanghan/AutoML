@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: progress_logger.py
-@time: 10/16/20 11:02 上午
+@time: 10/16/20 11:02
 @file_desc: ProgressLogger call defination.
 """
 import logging

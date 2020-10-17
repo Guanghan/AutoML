@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: optimizer.py
-@time: 10/13/20 10:24 上午
+@time: 10/13/20 10:24
 @file_desc: Optimizer class
 """
 import glog as log

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_task.py
-@time: 10/9/20 10:26 上午
+@time: 10/9/20 10:26
 @file_desc: The base class for tasks, e.g., algorithms, datasets, etc.
 
 TaskClass

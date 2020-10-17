@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_network.py
-@time: 10/7/20 12:11 上午
+@time: 10/7/20 12:11
 @file_desc: base class for a differentiable super network;
             large proportion of code borrowed from:
             https://github.com/huawei-noah/vega/blob/master/vega/search_space/networks/pytorch/network.py

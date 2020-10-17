@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: loss.py
-@time: 10/13/20 10:13 上午
+@time: 10/13/20 10:13
 @file_desc: Loss class
 """
 import glog as log

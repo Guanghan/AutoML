@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: lr_scheduler.py
-@time: 10/13/20 10:01 上午
+@time: 10/13/20 10:01
 @file_desc: Learning rate scheduler class.
 """
 import glog as log

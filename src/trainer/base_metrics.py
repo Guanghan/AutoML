@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_metrics.py
-@time: 10/14/20 5:12 下午
+@time: 10/14/20 5:12
 @file_desc: Base class for metrics. All metric classes are implemented with this base class.
 """
 

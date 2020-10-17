@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_dataset.py
-@time: 10/14/20 9:16 下午
+@time: 10/14/20 9:16
 @file_desc: Base class of the dataset.
 """
 import importlib

@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_codec.py
-@time: 10/5/20 9:33 下午
+@time: 10/5/20 9:33
 @file_desc: Define basic codec
 """
 

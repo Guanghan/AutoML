@@ -1,7 +1,7 @@
 """
 @author: Guanghan Ning
 @file: base_pipestep.py
-@time: 10/14/20 8:48 下午
+@time: 10/14/20 8:48
 @file_desc: Basic Step in a whole Pipeline
 """
 from src.core.base_task import Task
