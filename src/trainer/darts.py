@@ -102,15 +102,15 @@ class DartsTrainer(Callback):
         genotypes = self.search_alg.codec.calc_genotype(self._get_arch_weights())
 
         # load a template supernet description to modify on
-        template_path = os.path.join(os.path.dirname(__file__), "../../src/baselines/baseline_darts.json")
+        template_path = os.path.join(os.path.dirname(__file__), "../../src/baselines/baseline_darts20.json")
         descript_dict = read_json_from_file(template_path)
-        log.info("descript temp: {}".format(descript_dict))
+        #log.info("descript temp: {}".format(descript_dict))
         #template = desc2config(Config(), desc_src=descript_dict)
         #log.info("template: {}".format(template))
 
         # only replace the genotypes on the template description
         model_desc = self._gen_model_desc(genotypes, descript_dict)
-        log.info("model_desc: {}".format(model_desc))
+        #log.info("model_desc: {}".format(model_desc))
         self.trainer.config.codec = model_desc
 
         # output model description for this epoch
@@ -123,3 +123,16 @@ class DartsTrainer(Callback):
         model_desc["super_network"]["normal"]["genotype"] = genotypes[0]
         model_desc["super_network"]["reduce"]["genotype"] = genotypes[1]
         return model_desc
+
+
+@ClassFactory.register(ClassType.CALLBACK)
+class DartsFullTrainer(Callback):
+    """A special callback for CARSFullTrainer."""
+
+    def __init__(self):
+        super(DartsFullTrainer, self).__init__()
+
+    def before_epoch(self, epoch, logs=None):
+        """Be called before each epoch."""
+        self.trainer.config.report_on_epoch = True
+        self.trainer.model.drop_path_prob = self.trainer.config.drop_path_prob * epoch / self.trainer.config.epochs

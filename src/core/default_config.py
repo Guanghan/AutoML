@@ -121,6 +121,7 @@ class TrainerConfig(object):
     codec = None
     model_desc_file = None
     model_desc = None
+    hps_file = None
 
     callbacks = None
     grad_clip = None

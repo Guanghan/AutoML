@@ -56,7 +56,7 @@ class DefaultTrainerConfig(object):
     model_statistics = False
     callbacks = None
     #callbacks = [DartsTrainer]
-    darts_template_file = "src/baselines/baseline_darts.json"
+    darts_template_file = "src/baselines/baseline_darts20.json"
     lr_adjustment_position = 'after_epoch'
 
 

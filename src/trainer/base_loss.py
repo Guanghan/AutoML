@@ -13,10 +13,21 @@ from src.utils.utils_cfg import class2config, Config
 from src.core.default_config import TrainerConfig
 
 
+class DefaultLossConfig(object):
+    """Default Loss Config."""
+
+    _class_type = "trainer.loss"
+    _exclude_keys = ['type']
+    _update_all_attrs = True
+    type = 'CrossEntropyLoss'
+    params = {}
+
+
 class Loss(object):
     """Register and call loss class."""
 
-    config = LossConfig()
+    #config = LossConfig()
+    config = DefaultLossConfig()
 
     def __init__(self):
         """Initialize."""

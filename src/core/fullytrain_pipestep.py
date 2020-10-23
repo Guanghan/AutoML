@@ -62,7 +62,7 @@ class FullyTrainPipeStep(PipeStep):
         if cls_trainer is None:
             cls_trainer = ClassFactory.get_cls('trainer', t_cls_name="Trainer")
 
-        log.info(model_desc)
+        log.info("model_desc: ", model_desc)
         if model_desc is not None:
             model = NetworkDesc(model_desc).to_model()
             log.info("Model: {}".format(model))

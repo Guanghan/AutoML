@@ -35,6 +35,7 @@ class NetworkDesc(object):
 
         networks = []
         module_types = self._desc.get('modules')
+        log.info("module_types: ", module_types)
         if self._desc.get('type') != 'Network':
             for module_type in module_types:
                 network = self.type_to_network(module_type)
@@ -52,17 +53,19 @@ class NetworkDesc(object):
             raise KeyError('module description does not have key {name}')
 
         module_name = module_desc.get('name')
-        print("module_type: {}".format(module_type))
+        log.info("module_type: {}".format(module_type))
         if self._model_name is None:
             self._model_name = module_name
         if self._model_type is None:
             self._model_type = module_type
 
         network_cls = ClassFactory.get_cls(module_type, module_name)
+        log.info("network_cls: {}".format(network_cls))
         if network_cls is None:
             raise Exception("Network type error, module name: {}, module_type: {}".format(module_type, module_name))
 
         network = network_cls(module_desc)
+        log.info("network: {}".format(network))
         return network
 
     @property

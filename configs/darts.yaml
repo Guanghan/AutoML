@@ -81,9 +81,9 @@ nas:
 
     trainer:
         type: Trainer
-        darts_template_file: "../../src/baselines/darts_cifar10.json"
+        darts_template_file: "../../src/baselines/baseline_darts20.json"
         callbacks: DartsTrainer
-        epochs: 40
+        epochs: 50
         optim:
             type: SGD
             params:

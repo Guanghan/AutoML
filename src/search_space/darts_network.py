@@ -13,6 +13,8 @@ from src.core.class_factory import NetworkType, ClassFactory
 from src.search_space.base_network import Network
 from src.utils.utils_cfg import Config
 
+import glog as log
+
 
 @ClassFactory.register(NetworkType.SUPER_NETWORK)
 class DartsNetwork(Network):
@@ -41,14 +43,19 @@ class DartsNetwork(Network):
 
     def build_network(self):
         """Build Darts Network."""
+        log.info("build network")
         C_curr = self._network_stems(self.network[0])
+        log.info("network built 1/4")
+        log.info("self.network = {}".format(self.network))
         C_prev, C_aux = self._network_cells(self.network[1:], C_curr)
+        log.info("network built 1/2")
         if not self.search and self._auxiliary:
             self.auxiliary_head = AuxiliaryHead(C_aux, self._classes, self._aux_size)
         self.global_pooling = nn.AdaptiveAvgPool2d(1)
         self.classifier = nn.Linear(C_prev, self._classes)
         if self.search:
             self._initialize_alphas()
+        log.info("network built")
 
     def _network_stems(self, stem):
         """Build stems part.
