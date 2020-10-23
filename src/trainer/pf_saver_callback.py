@@ -4,7 +4,7 @@
 @time: 10/16/20 2:03
 @file_desc: Performance Saver callback.
 """
-import logging
+import glog as log
 from .base_callback import Callback
 from src.core.class_factory import ClassFactory, ClassType
 
@@ -31,7 +31,7 @@ class PerformanceSaver(Callback):
 
     def after_epoch(self, epoch, logs=None):
         """Be called after the training epoch."""
-        logging.debug("train record: saver performance after epoch run successes.")
+        log.info("train record: saver performance after epoch run successes.")
         self.summary_perfs = logs.get('summary_perfs', {})
         if not self.save_after_epoch:
             return

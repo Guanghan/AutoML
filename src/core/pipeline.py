@@ -9,7 +9,7 @@ import glog as log
 
 log.setLevel('INFO')
 
-from src.utils.read_configure import Config, desc2config
+from src.utils.utils_cfg import Config, desc2config
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import PipeStepConfig
 
@@ -58,7 +58,8 @@ class Pipeline(object):
         """
         ClassFactory.attach_config_to_factory(self.config)
 
-        procedures = ["nas"]
+        #procedures = ["nas"]
+        procedures = ["nas", "fully_train"]
 
         for procedure in procedures:
             # get configuration for each step
@@ -88,5 +89,6 @@ class Pipeline(object):
 
 if __name__ == '__main__':
     #pipeline = Pipeline('../../configs/darts.yaml')
-    pipeline = Pipeline('configs/darts.yaml')
+    #pipeline = Pipeline('configs/darts.yaml')
+    pipeline = Pipeline('../../configs/darts_full.yaml')
     pipeline.run()

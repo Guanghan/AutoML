@@ -9,7 +9,7 @@ log.setLevel("INFO")
 
 from src.core.class_factory import ClassType, ClassFactory
 from src.core.base_task import Task
-from src.utils.read_configure import desc2config, Config
+from src.utils.utils_cfg import desc2config, Config
 from src.search_space.base_codec import Codec
 
 

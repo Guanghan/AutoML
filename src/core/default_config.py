@@ -117,6 +117,10 @@ class TrainerConfig(object):
     perfs_cmp_mode = None
     perfs_cmp_key = None
     call_metrics_on_train = True
+    # decode
+    codec = None
+    model_desc_file = None
+    model_desc = None
 
     callbacks = None
     grad_clip = None

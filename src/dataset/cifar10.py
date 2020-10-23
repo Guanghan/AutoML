@@ -118,7 +118,8 @@ class Cifar10(CIFAR10, Dataset):
         if self.mode == 'test' or self.args["train_portion"] == 1:
             return None
         self.args["shuffle"] = False
-        num_train = 50000
+        #num_train = 50000
+        num_train = 500
         indices = list(range(num_train))
         split = int(np.floor(self.args["train_portion"] * num_train))
         if self.mode == 'train':

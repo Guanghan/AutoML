@@ -7,7 +7,7 @@ nas:
     dataset:
         type: Cifar10
         common:
-            data_path: /cache/datasets/cifar10/
+            data_path: /data/cifar10/
             batch_size: 64
             train_portion: 0.5
 
@@ -81,7 +81,7 @@ nas:
 
     trainer:
         type: Trainer
-        darts_template_file: "{default_darts_cifar10_template}"
+        darts_template_file: "../../src/baselines/darts_cifar10.json"
         callbacks: DartsTrainer
         epochs: 1
         optim:
@@ -102,12 +102,12 @@ nas:
 fully_train:
     pipe_step:
         type: FullyTrainPipeStep
-        models_folder: "{local_base_path}/output/nas/"
+        models_folder: "output/default_nas/"
     model:
-        model_desc_file: '{local_output_path}/nas/model_desc_1.json'
+        model_desc_file: 'output/default_nas/model_desc_1.json'
 
     trainer:
-        ref: nas.trainer
+        type: Trainer
         callbacks: DartsFullTrainer
         epochs: 6
         lr_scheduler:

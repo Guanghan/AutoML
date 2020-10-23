@@ -41,7 +41,7 @@ def test_get_cls():
             print("COCO dataset")
 
     # config
-    from src.utils.read_configure import Config
+    from src.utils.utils_cfg import Config
     config = Config("../configs/example.yaml")
     print(config)
 

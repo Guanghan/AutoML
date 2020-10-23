@@ -204,3 +204,8 @@ def copy_folder(src, dst, symlinks=False, ignore=None):
             shutil.copytree(s, d, symlinks, ignore)
         else:
             shutil.copy2(s, d)
+
+
+def copy_file(src, dst):
+    from shutil import copyfile
+    copyfile(src, dst)

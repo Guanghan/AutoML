@@ -12,14 +12,14 @@ import torch
 from src.core.class_factory import ClassType, ClassFactory
 
 from src.utils.utils_log import init_log
-from src.utils.read_configure import Config, class2config, desc2config
+from src.utils.utils_cfg import Config, class2config, desc2config
 from src.utils.utils_io_folder import create_folder, copy_folder
 
 from src.trainer.base_worker import Worker
 from src.trainer.base_callback_list import CallbackList
 from src.trainer.optimizer import Optimizer
 from src.trainer.lr_scheduler import LrScheduler
-from src.trainer.loss import Loss
+from src.trainer.base_loss import Loss
 from src.trainer.base_metrics import Metrics
 
 from src.search_space.description import NetworkDesc
@@ -110,6 +110,8 @@ class Trainer(Worker):
         # has been built for running
         self.is_built = False
         self.config.kwargs = kwargs
+
+        self.step_name = "default_nas"
 
     def train_process(self):
         """Whole train process of the TrainWorker specified in config.
@@ -343,10 +345,9 @@ class Trainer(Worker):
 
     def _backup(self):
         """Backup result worker folder."""
-        if self.need_backup is True and self.backup_base_path is not None:
-            backup_worker_path = os.path.join(self.backup_base_path,
-                                              self.get_worker_subpath())
-            copy_folder(src= self.get_local_worker_path(self.step_name),
+        backup_worker_path = os.path.join("backup", self.step_name)
+        if not os.path.exists(backup_worker_path):
+            copy_folder(src= os.path.join("output", self.step_name),
                         dst= backup_worker_path)
 
     def _train_loop(self):

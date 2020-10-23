@@ -42,10 +42,15 @@ class CallbackList(object):
     def _get_callbacks(self, customs, disables):
         #defaults = ["ModelStatistics", "MetricsEvaluator", "ModelCheckpoint", "PerformanceSaver",
         #            "LearningRateScheduler", "ProgressLogger", "ReportCallback"]
-        defaults = ["PerformanceSaver",
+        defaults = [
+                    "ModelStatistics",
+                    "ModelCheckpoint",
                     "MetricsEvaluator",
+                    "ProgressLogger",
+                    "PerformanceSaver",
                     "LearningRateScheduler",
-                    "ProgressLogger"]
+                    "ReportCallback",
+                    ]
         custom_disables = []
         disables = disables if disables else []
         customs = customs if customs else []

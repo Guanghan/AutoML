@@ -12,7 +12,7 @@ of timeout, killing the worker process which exceeds setting time.
 import copy
 from src.core.base_task import Task
 from src.core.class_factory import ClassFactory
-from src.utils.read_configure import class2config
+from src.utils.utils_cfg import class2config
 
 
 class Worker(Task):

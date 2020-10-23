@@ -9,7 +9,7 @@ import glog as logger
 
 logger.setLevel('INFO')
 
-from src.utils.read_configure import Config
+from src.utils.utils_cfg import Config
 from src.core.class_factory import ClassFactory, ClassType
 
 

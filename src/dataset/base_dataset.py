@@ -9,7 +9,7 @@ from torch.utils import data as torch_data
 from src.core.base_task import Task
 from src.dataset.transforms import Transforms
 from src.core.class_factory import ClassFactory, ClassType
-from src.utils.read_configure import Config, class2config
+from src.utils.utils_cfg import Config, class2config
 from src.utils.utils_dict import update_dict
 
 

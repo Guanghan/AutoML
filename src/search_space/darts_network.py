@@ -11,7 +11,7 @@ import torch.nn.functional as F
 
 from src.core.class_factory import NetworkType, ClassFactory
 from src.search_space.base_network import Network
-from src.utils.read_configure import Config
+from src.utils.utils_cfg import Config
 
 
 @ClassFactory.register(NetworkType.SUPER_NETWORK)

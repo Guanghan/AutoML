@@ -1,6 +1,6 @@
 """
 @author: Guanghan Ning
-@file: loss.py
+@file: base_loss.py
 @time: 10/13/20 10:13
 @file_desc: Loss class
 """
@@ -9,7 +9,7 @@ from inspect import isclass
 from functools import partial
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import LossConfig
-from src.utils.read_configure import class2config, Config
+from src.utils.utils_cfg import class2config, Config
 from src.core.default_config import TrainerConfig
 
 

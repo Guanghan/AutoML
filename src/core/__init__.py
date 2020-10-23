@@ -7,3 +7,4 @@
 from src.core.base_pipestep import *
 from src.core.nas_pipestep import *
 from src.core.generator import *
+from src.core.fullytrain_pipestep import *

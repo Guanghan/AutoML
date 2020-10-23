@@ -6,7 +6,7 @@
 """
 import torch
 import torch.nn as nn
-from src.utils.read_configure import Config
+from src.utils.utils_cfg import Config
 from src.search_space.base_network import Network
 
 from src.core.class_factory import NetworkType, ClassFactory
@@ -30,7 +30,7 @@ class MixedOp(Network):
         if not isinstance(ops_cands, list):
             op_desc = {'C': C, 'stride': stride, 'affine': True}
             class_op = ClassFactory.get_cls(NetworkType.BLOCK, ops_cands)
-            self._ops = class_op(Config(op_desc))
+            self._ops = class_op(op_desc)
         else:
             self._ops = nn.ModuleList()
             for primitive in ops_cands:

@@ -10,7 +10,7 @@ from inspect import isfunction
 from copy import deepcopy
 
 from src.trainer import base_metrics as metrics
-from src.utils.read_configure import Config, class2config
+from src.utils.utils_cfg import Config, class2config
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import MetricsConfig
 

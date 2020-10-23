@@ -13,8 +13,9 @@ from src.core.class_factory import ClassFactory, ClassType
 from src.search_algorithms.base_algorithm import SearchAlgorithm
 from src.search_space.search_space import SearchSpace
 from src.trainer.base_callback import Callback
-from src.utils.read_configure import desc2config, Config
-from src.utils.utils_json import read_json_from_file
+from src.utils.utils_cfg import desc2config, Config
+from src.utils.utils_json import read_json_from_file, write_json_to_file
+from src.utils.utils_io_folder import copy_file
 
 
 @ClassFactory.register(ClassType.CALLBACK)
@@ -80,6 +81,7 @@ class DartsTrainer(Callback):
         child_desc_temp = self.search_alg.codec.calc_genotype(self._get_arch_weights())
         log.info('normal = %s', child_desc_temp[0])
         log.info('reduce = %s', child_desc_temp[1])
+        self.epoch = epoch
         self._save_descript()
 
     def after_train(self, logs=None):
@@ -98,18 +100,26 @@ class DartsTrainer(Callback):
         """Save result description."""
         # get genotypes from trained alpha params (softmax to crisp)
         genotypes = self.search_alg.codec.calc_genotype(self._get_arch_weights())
+
         # load a template supernet description to modify on
         template_path = os.path.join(os.path.dirname(__file__), "../../src/baselines/baseline_darts.json")
         descript_dict = read_json_from_file(template_path)
-        template = Config()
-        template = desc2config(template, desc_src=descript_dict)
+        log.info("descript temp: {}".format(descript_dict))
+        #template = desc2config(Config(), desc_src=descript_dict)
+        #log.info("template: {}".format(template))
+
         # only replace the genotypes on the template description
-        model_desc = self._gen_model_desc(genotypes, template)
+        model_desc = self._gen_model_desc(genotypes, descript_dict)
+        log.info("model_desc: {}".format(model_desc))
         self.trainer.config.codec = model_desc
+
+        # output model description for this epoch
+        dst_path = os.path.join("output", "desc_darts_epoch{}.json".format(self.epoch))
+        write_json_to_file(model_desc, dst_path)
 
     def _gen_model_desc(self, genotypes, template):
         """update template supernet description with given genotypes."""
         model_desc = deepcopy(template)
-        model_desc.super_network["normal"]["genotype"] = genotypes[0]
-        model_desc.super_network["reduce"]["genotype"] = genotypes[1]
+        model_desc["super_network"]["normal"]["genotype"] = genotypes[0]
+        model_desc["super_network"]["reduce"]["genotype"] = genotypes[1]
         return model_desc

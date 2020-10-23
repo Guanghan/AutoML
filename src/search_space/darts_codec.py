@@ -7,7 +7,7 @@
 
 import copy
 import numpy as np
-from src.utils.read_configure import dict2config, Config
+from src.utils.utils_cfg import dict2config, Config
 from src.core.class_factory import ClassType, ClassFactory
 from src.search_space.base_codec import Codec
 import glog as log

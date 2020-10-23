@@ -6,7 +6,7 @@
 """
 from src.core.class_factory import ClassFactory, ClassType
 from src.core.default_config import SearchSpaceConfig
-from src.utils.read_configure import class2config, Config
+from src.utils.utils_cfg import class2config, Config
 
 
 @ClassFactory.register(ClassType.SEARCH_SPACE)

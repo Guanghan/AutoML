@@ -11,7 +11,7 @@ import logging
 import json
 from copy import deepcopy
 from src.core.class_factory import ClassType, ClassFactory, NetworkType
-from src.utils.read_configure import Config, desc2config
+from src.utils.utils_cfg import Config, desc2config
 import glog as log
 
 

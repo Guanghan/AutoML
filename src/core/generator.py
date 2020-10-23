@@ -11,7 +11,7 @@ from src.search_algorithms.base_algorithm import SearchAlgorithm
 from src.search_space.search_space import SearchSpace
 #from vega.core.report import Report, ReportRecord
 
-from src.utils.read_configure import Config, dict2config
+from src.utils.utils_cfg import Config, dict2config
 from src.utils.utils_dict import update_dict
 
 
