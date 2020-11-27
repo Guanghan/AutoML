@@ -9,15 +9,27 @@ from src.core.class_factory import ClassFactory, ClassType
 from src.utils.utils_cfg import class2config, Config
 
 from src.core.default_config import OptimConfig
-assert OptimConfig.params == {'lr': 0.1}
+#assert OptimConfig.params == {'lr': 0.1}
 
 
 class DefaultOptimConfig(object):
     _class_type = "trainer.optim"
     _exclude_keys = ['type']
     _update_all_attrs = True
+    # for alpha
+    '''
     type = 'Adam'
-    params = {"lr": 0.1}
+    params = {"lr": 0.0003,
+              "betas": (0.5, 0.999),
+              "weight_decay": 0.0003,
+              }
+    '''
+    # for weights
+    type = 'SGD'
+    params = {"lr": 0.025,
+              "momentum": 0.9,
+              "weight_decay": 0.0003,
+              }
 
 
 class Optimizer(object):

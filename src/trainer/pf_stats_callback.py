@@ -55,7 +55,8 @@ class ModelStatistics(Callback):
             if self.gflops is None:
                 flops_count, params_count = calc_model_flops_params(self.model,
                                                                     self.input)
-                self.gflops, self.kparams = flops_count * 1600 * 1e-9, params_count * 1e-3
+                #self.gflops, self.kparams = flops_count * 1600 * 1e-9, params_count * 1e-3
+                self.gflops, self.kparams = flops_count * 1e-9, params_count * 1e-3
             summary_perfs = logs.get('summary_perfs', {})
             if epoch:
                 summary_perfs.update({'gflops': self.gflops, 'kparams': self.kparams,

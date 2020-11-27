@@ -80,7 +80,10 @@ class OptimConfig(object):
     _exclude_keys = ['type']
     _update_all_attrs = True
     type = 'Adam'
-    params = {"lr": 0.1}
+    params = {"lr": 0.025,
+              "betas": (0.5, 0.999),
+              "weight_decay": 0.0003,
+              }
 
 
 class LossConfig(object):

@@ -83,7 +83,7 @@ nas:
         type: Trainer
         darts_template_file: "../../src/baselines/baseline_darts20.json"
         callbacks: DartsTrainer
-        epochs: 3
+        epochs: 50
         optim:
             type: SGD
             params:
@@ -102,14 +102,20 @@ nas:
 fully_train:
     pipe_step:
         type: FullyTrainPipeStep
-        models_folder: "output/default_nas/"
+        models_folder: "output/"
     model:
-        model_desc_file: 'output/default_nas/model_desc_1.json'
+        model_desc_file: '/root/AutoML/src/baselines/baseline_darts20_searched.json' #'output/default_nas/1/desc_1.json'
 
     trainer:
         type: Trainer
         callbacks: DartsFullTrainer
-        epochs: 6
+        epochs: 600
+        optim:
+            type: SGD
+            params:
+                lr: 0.025
+                momentum: 0.9
+                weight_decay: !!float 3e-4
         lr_scheduler:
             type: CosineAnnealingLR
             params:
@@ -120,6 +126,7 @@ fully_train:
                 loss_base:
                     type: torch.nn.CrossEntropyLoss
                 aux_weight: 0.4
+        grad_clip: 5.0
         warmup_epochs: 0
         drop_path_prob: 0.2
 

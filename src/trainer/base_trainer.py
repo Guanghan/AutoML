@@ -52,8 +52,8 @@ class DefaultTrainerConfig(object):
     call_metrics_on_train = True
 
     grad_clip = None
-    #model_statistics = True
-    model_statistics = False
+    model_statistics = True
+    #model_statistics = False
     callbacks = None
     #callbacks = [DartsTrainer]
     darts_template_file = "src/baselines/baseline_darts20.json"
@@ -104,7 +104,7 @@ class Trainer(Worker):
         self.model_pickle_file_name = 'model.pkl'
         self.model_path = os.path.join(self.model_pickle_file_name)
         self.checkpoint_file = os.path.join(self.checkpoint_file_name)
-        self.weights_file = os.path.join("model.pth")
+        self.weights_file = "model.pth"
 
         # Indicate whether the necessary components of a trainer
         # has been built for running
@@ -215,6 +215,11 @@ class Trainer(Worker):
         self.optimizer.zero_grad()
 
         output = self.model(input)
+        #log.info("output: {}".format(len(output[0])))
+        #log.info("target: {}".format(target.shape))
+        if isinstance(output, tuple):   # use the last auxiliary output as
+            output = output[-1]
+
         loss = self.loss(output, target)
         loss.backward()
 
@@ -228,6 +233,9 @@ class Trainer(Worker):
     def _default_valid_step(self, batch):
         input, target = batch
         output = self.model(input)
+
+        if isinstance(output, tuple):   # use the last auxiliary output as
+            output = output[-1]
         return {'valid_batch_output': output}
 
     def _init_cuda_setting(self):
@@ -254,6 +262,7 @@ class Trainer(Worker):
     def _init_model(self, model=None):
         """Load model desc from save path and parse to model."""
         # init with model if it is given
+        log.info("hello: {}".format(model))
         if model is not None:
             if self.use_cuda:
                 model = model.cuda()
@@ -261,8 +270,13 @@ class Trainer(Worker):
 
         # get model description based on config
         model_cfg = Config(ClassFactory.__configs__.get('model'))
+        log.info("hello: {}".format(model_cfg))
         if "model_desc" in model_cfg and model_cfg.model_desc is not None:
             model_desc = model_cfg.model_desc
+        elif "model_desc_file" in model_cfg:
+            from src.utils.utils_json import read_json_from_file
+            model_desc = read_json_from_file(model_cfg.model_desc_file)
+            log.info("hello: {}".format(model_desc))
         else:
             return None
 

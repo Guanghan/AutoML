@@ -33,6 +33,7 @@ class FullyTrainPipeStep(PipeStep):
         log.info("Loading pipestep records: {}".format(records))
 
         log.info("Training with network description: {}".format(records[-1].desc))
+        log.info("Using desc epoch: {}".format(records[-1].worker_id))
         self._train_model(records[-1].desc)
 
         log.info("Updating Record: {}".format(records))

@@ -58,8 +58,8 @@ class Pipeline(object):
         """
         ClassFactory.attach_config_to_factory(self.config)
 
-        procedures = ["nas"]
-        #procedures = [ "fully_train"]
+        #procedures = ["nas"]
+        procedures = [ "fully_train"]
 
         for procedure in procedures:
             # get configuration for each step
