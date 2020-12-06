@@ -14,6 +14,7 @@ class none(Block):
     def __init__(self, desc):
         super(none, self).__init__()
         self.block = Zero(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -24,6 +25,7 @@ class avg_pool_3x3(Block):
         super(avg_pool_3x3, self).__init__()
         stride = desc["stride"]
         self.block = nn.AvgPool2d(3, stride=stride, padding=1, count_include_pad=False)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -34,6 +36,7 @@ class max_pool_3x3(Block):
         super(max_pool_3x3, self).__init__()
         stride = desc["stride"]
         self.block = nn.MaxPool2d(3, stride=stride, padding=1)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -48,6 +51,7 @@ class skip_connect(Block):
             self.block = Identity()
         else:
             self.block = FactorizedReduce(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -61,6 +65,7 @@ class sep_conv_3x3(Block):
         desc["kernel_size"] = 3
         desc["padding"] = 1
         self.block = SeparatedConv(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -75,6 +80,7 @@ class sep_conv_5x5(Block):
         desc["kernel_size"] = 5
         desc["padding"] = 2
         self.block = SeparatedConv(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -88,6 +94,7 @@ class sep_conv_7x7(Block):
         desc["kernel_size"] = 7
         desc["padding"] = 3
         self.block = SeparatedConv(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -102,6 +109,7 @@ class dil_conv_3x3(Block):
         desc["padding"] = 2
         desc["dilation"] = 2
         self.block = DilatedConv(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -116,6 +124,7 @@ class dil_conv_5x5(Block):
         desc["padding"] = 4
         desc["dilation"] = 2
         self.block = DilatedConv(desc)
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -136,6 +145,7 @@ class conv_7x1_1x7(Block):
                       padding=(3, 0), bias=False),
             nn.BatchNorm2d(channel_out, affine=affine)
         )
+        self.desc = desc
 
 
 @ClassFactory.register(NetworkType.BLOCK)
@@ -151,6 +161,7 @@ class PreOneStem(Network):
             nn.Conv2d(3, self.C_curr, 3, padding=1, bias=False),
             nn.BatchNorm2d(self.C_curr)
         )
+        self.desc = desc
 
     def forward(self, x):
         x = self.stem(x)

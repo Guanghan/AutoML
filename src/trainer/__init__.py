@@ -4,7 +4,8 @@
 @time: 10/8/20 11:34
 @file_desc:
 """
-from src.trainer.base_trainer import *
+#from src.trainer.base_trainer import *
+from src.trainer.base_trainer_lut import *
 from src.trainer.base_callback import *
 from src.trainer.darts import *
 from src.trainer.base_loss import *

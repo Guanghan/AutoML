@@ -17,6 +17,10 @@ import glog as log
 import pickle
 
 
+lat_rectifier_stem = 1  # fixed latency for fixed stem
+lat_rectifier_globalpooling = 0.1
+lat_rectifier_classifier = 0.1
+
 @ClassFactory.register(NetworkType.SUPER_NETWORK)
 class DartsNetwork(Network):
     """Base Darts Network of classification.
@@ -56,7 +60,7 @@ class DartsNetwork(Network):
         self.classifier = nn.Linear(C_prev, self._classes)
         if self.search:
             self._initialize_alphas()
-        #self._init_latency_lut()  # get latency for each op from the pre-built lookup table
+        self._init_latency_lut()  # get latency for each op from the pre-built lookup table
         log.info("network built")
 
     def _network_stems(self, stem):
@@ -133,7 +137,6 @@ class DartsNetwork(Network):
         """Initialize architecture parameters."""
         k = len(self.desc["normal"]["genotype"])
         num_ops = len(self.desc["normal"]["genotype"][0][0])
-        # TODO: why not using register_parameter if requiring gradient?
         self.register_buffer('alphas_normal',
                              (1e-3 * torch.randn(k, num_ops)).cuda().requires_grad_())
         self.register_buffer('alphas_reduce',
@@ -143,12 +146,16 @@ class DartsNetwork(Network):
 
     def _init_latency_lut(self):
         """Initialize latency for each op, based on the pre-built latency lookup table."""
-        self.latency_lut_path = self.desc['latency_lut_path']
+        if 'latency_lut_path' not in self.desc:
+            self.latency_lut_path = '/root/AutoML/src/utils/latency_gpu_darts.pkl'
+        else:
+            self.latency_lut_path = self.desc['latency_lut_path']
         with open(self.latency_lut_path, 'rb') as f:
             latency_lut = pickle.load(f)
 
         # refer: https://discuss.pytorch.org/t/python-lookup-table-or-dictionary-saved-in-the-gpu/59077/2
-        self.register_buffer('latency_lut', torch.tensor(latency_lut).cuda())  # maybe need to register each key-value pair respectively
+        #self.register_buffer('latency_lut', torch.tensor(latency_lut).cuda())  # maybe need to register each key-value pair respectively
+        self.latency_lookup = latency_lut
         return
 
     def arch_parameters(self):
@@ -170,7 +177,10 @@ class DartsNetwork(Network):
 
     def forward(self, input):
         """Forward function of Darts Network."""
+        latency_sum = 0
         s0, s1 = self.stem(input)
+        latency_sum += lat_rectifier_stem
+
         for i, cell in enumerate(self.cells):
             if self.search:
                 if self.desc["network"][i + 1] == 'reduce':
@@ -179,16 +189,26 @@ class DartsNetwork(Network):
                     weights = F.softmax(self.alphas_normal, dim=-1)
             else:
                 weights = None
-            s0, s1 = s1, cell(s0, s1, weights, self.drop_path_prob)
+
+            s_cur, latency = cell(s0, s1, weights, self.drop_path_prob, self.latency_lookup)
+            s0, s1 = s1, s_cur
+
+            latency_sum += latency
+
             if not self.search:
                 if self._auxiliary and i == self._auxiliary_layer:
                     logits_aux = self.auxiliary_head(s1)
+
         out = self.global_pooling(s1)
+        latency_sum += lat_rectifier_globalpooling
+
         logits = self.classifier(out.view(out.size(0), -1))
+        latency_sum += lat_rectifier_classifier
+
         if self._auxiliary and not self.search:
             return logits, logits_aux
         else:
-            return logits
+            return logits, latency_sum
 
 
 class AuxiliaryHead(nn.Module):

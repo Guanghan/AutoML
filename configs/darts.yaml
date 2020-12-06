@@ -32,6 +32,8 @@ nas:
             auxiliary: False
             search: True
 
+            latency_lut_path: '/root/AutoML/src/utils/latency_gpu_darts.pkl'
+
             normal:
                 type: 'block'
                 name: 'Cell'
@@ -83,7 +85,7 @@ nas:
         type: Trainer
         darts_template_file: "../../src/baselines/baseline_darts20.json"
         callbacks: DartsTrainer
-        epochs: 50
+        epochs: 51
         optim:
             type: SGD
             params:

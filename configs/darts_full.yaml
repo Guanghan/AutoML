@@ -32,6 +32,8 @@ nas:
             auxiliary: False
             search: True
 
+            latency_lut_path: ''
+
             normal:
                 type: 'block'
                 name: 'Cell'
