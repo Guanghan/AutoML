@@ -1,2 +1,6 @@
 dataset:
   type: COCO
+search_algorithm:
+  type: my_NAS
+search_space:
+  type: my_space

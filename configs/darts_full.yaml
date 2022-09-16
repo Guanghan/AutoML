@@ -1,0 +1,159 @@
+pipeline: [nas, fully_train]
+
+nas:
+    pipe_step:
+        type: NasPipeStep
+
+    dataset:
+        #type: Cifar10
+        type: SmokingDataset
+        common:
+            #data_path: /data/cifar10/
+            data_path: /data/smoking/
+            batch_size: 64
+            train_portion: 0.5
+
+    search_algorithm:
+        type: DifferentialAlgorithm
+        sample_num: 1
+
+    search_space:
+        type: SearchSpace
+        modules: ['super_network']
+        super_network:
+            name: DartsNetwork
+            network: ['PreOneStem',
+                      'normal', 'normal', 'reduce',
+                      'normal', 'normal', 'reduce',
+                      'normal', 'normal',
+            ]
+
+            input_size: 32
+            init_channels: 16
+            num_classes: 10
+            auxiliary: False
+            search: True
+
+            latency_lut_path: ''
+
+            normal:
+                type: 'block'
+                name: 'Cell'
+                steps: 4
+                reduction: False
+                genotype:
+                  [
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 2, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 2, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 3 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 3 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 4 ],
+                  ]
+                concat: [2, 3, 4, 5]
+            reduce:
+                type: 'block'
+                name: 'Cell'
+                steps: 4
+                reduction: True
+                genotype:
+                  [
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 2, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 2, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 3, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 4, 3 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 0 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 1 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 2 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 3 ],
+                  [ ['none', 'max_pool_3x3', 'avg_pool_3x3', 'skip_connect', 'sep_conv_3x3', 'sep_conv_5x5', 'dil_conv_3x3', 'dil_conv_5x5'], 5, 4 ],
+                  ]
+                concat: [2, 3, 4, 5]
+
+    trainer:
+        type: Trainer
+        darts_template_file: "../../src/baselines/baseline_darts20.json"
+        callbacks: DartsTrainer
+        epochs: 50
+        optim:
+            type: SGD
+            params:
+                lr: 0.025
+                momentum: 0.9
+                weight_decay: !!float 3e-4
+        lr_scheduler:
+            type: CosineAnnealingLR
+            params:
+                T_max: 50.0
+                eta_min: 0.001
+        grad_clip: 5.0
+        seed: 10
+        unrolled: True
+
+fully_train:
+    pipe_step:
+        type: FullyTrainPipeStep
+        models_folder: "output/"
+    model:
+        model_desc_file: '/root/AutoML/src/baselines/baseline_darts20_searched.json' #'output/default_nas/1/desc_1.json'
+
+    trainer:
+        type: Trainer
+        callbacks: DartsFullTrainer
+        epochs: 600
+        #epochs: 300  # for smoking
+        #epochs: 60  # for smoking
+        optim:
+            type: SGD
+            params:
+                lr: 0.025
+                #lr: 0.05
+                momentum: 0.9
+                weight_decay: !!float 3e-4
+        lr_scheduler:
+            type: CosineAnnealingLR
+            params:
+                T_max: 600.0
+                #T_max: 300.0
+                #T_max: 60.0
+        loss:
+            type: MixAuxiliaryLoss
+            params:
+                loss_base:
+                    type: torch.nn.CrossEntropyLoss
+                aux_weight: 0.4
+        #grad_clip: 5.0
+        grad_clip: 0
+        warmup_epochs: 0
+        #drop_path_prob: 0.2
+        drop_path_prob: 0
+
+    dataset:
+        #type: Cifar10
+        type: SmokingDataset
+        common:
+            #data_path: /data/cifar10/
+            data_path: /data/smoking/
+            num_workers: 32
+            #num_workers: 1
+            #batch_size: 96
+            #batch_size: 128
+            #batch_size: 36
+            batch_size: 80
+            train_portion: 1.0  # FOR smoking
+            #shuffle: False  # for smoking
+        train:
+            cutout_length: 8

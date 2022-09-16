@@ -1,18 +1,22 @@
 """
 @author: Guanghan Ning
 @file: class_factory.py
-@time: 10/1/20 11:16 下午
+@time: 10/1/20 11:16
 @file_desc: Register classes so that a class can be instantiated via config file;
             no need to know explicitly which one.
 """
 from copy import deepcopy
 
+
 class ClassType(object):
     """Const class: saved defined class type."""
     # general: logger, GPU, work time, etc.
     GENERAL = 'general'
+    # Pipeline
+    PIPE_STEP = 'pipe_step'
     # NAS and HPO
     SEARCH_ALGORITHM = 'search_algorithm'
+    CODEC = 'search_algorithm.codec'
     SEARCH_SPACE = 'search_space'
     # trainer
     TRAINER = 'trainer'
@@ -25,6 +29,19 @@ class ClassType(object):
     TRANSFORM = 'dataset.transforms'
     # evaluator
     EVALUATOR = 'evaluator'
+    # callback
+    CALLBACK = 'trainer.base_callback'
+
+
+class NetworkType(object):
+    """Const class: saved defined network type."""
+    BLOCK = 'block'
+    BACKBONE = 'backbone'
+    HEAD = 'head'
+    LOSS = 'loss'
+    SUPER_NETWORK = 'super_network'
+    CUSTOM = 'custom'
+    OPERATOR = 'operator'
 
 
 class ClassFactory(object):
@@ -110,7 +127,7 @@ class ClassFactory(object):
 
         Args:
             type_name: type name of class registry
-            t_cls_name: (alternatively) class name can be explicitly given
+            cls_name: (alternatively) class name can be explicitly given
 
         Returns: True/False
 
@@ -124,6 +141,26 @@ class ClassFactory(object):
         """ Attach config to Class Factory
 
         Args:
-            configs:
+            configs (Config): the config object read from yaml
         """
         cls.__configs__ = deepcopy(configs)
+
+    @classmethod
+    def register_from_package(cls, package, type_name=ClassType.GENERAL):
+        """Register all public class from package.
+
+        Args:
+            cls: class need to register.
+            package: package to register class from.
+            type_name: type name.
+        """
+        from inspect import isfunction, isclass
+        for _name in dir(package):
+            if _name.startswith("_"):
+                continue
+
+            _cls = getattr(package, _name)
+            if not isclass(_cls) and not isfunction(_cls):
+                continue
+            ClassFactory.register_cls(_cls, type_name)
+

@@ -23,7 +23,13 @@ def test_register():
 
 
 def test_register_cls():
-    assert False
+    from src.core.class_factory import ClassFactory, ClassType
+    class COCO(object):
+        def __init__(self):
+            print("COCO dataset")
+    ClassFactory.register_cls(COCO, ClassType.DATASET)
+    print(ClassFactory.__registry__)
+    assert 'COCO' in ClassFactory.__registry__['dataset'].keys()
 
 
 def test_get_cls():
@@ -35,7 +41,7 @@ def test_get_cls():
             print("COCO dataset")
 
     # config
-    from src.utils.read_configure import Config
+    from src.utils.utils_cfg import Config
     config = Config("../configs/example.yaml")
     print(config)
 
