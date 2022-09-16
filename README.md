@@ -2,10 +2,6 @@
 
 [Enter the AutoML: Papers and Resources](https://docs.google.com/document/d/193c3Eh_7C4Icvhfr1MxFlU7XrtP7WH4CyQUCIXmeUwk/edit)
 
-[CF Space: More Info](https://cf.jd.com/pages/viewpage.action?pageId=369653056)
-
-Docker Image: [idockerhub.jd.com/ailab_iu_repo/automl:v0.1](idockerhub.jd.com/ailab_iu_repo/automl:v0.1)
-
 ## To devs: recommended dev practice
 
 #### 1. Documentation: [doc's doc](https://zh-sphinx-doc.readthedocs.io/en/latest/markup/toctree.html)
@@ -65,9 +61,6 @@ pip install PyYAML
 #### 2. Example: Train DARTS on CIFAR10 
 
 ##### 2.1 Get docker image
-```
-docker pull idockerhub.jd.com/ailab_iu_repo/automl:v0.1
-```
 
 ##### 2.2 Run docker container 
 ```
