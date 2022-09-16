@@ -69,7 +69,8 @@ class MetricsConfig(object):
 
     _class_type = "trainer.metric"
     _update_all_attrs = True
-    type = 'accuracy'
+    #type = 'accuracy'
+    type = 'intercept_rate'
     params = {}
 
 
@@ -115,11 +116,13 @@ class TrainerConfig(object):
     loss = LossConfig
     # Validation
     with_valid = True
-    valid_interval = 1
+    valid_interval = 30
+    #valid_interval = 10
     # evaluation
     perfs_cmp_mode = None
     perfs_cmp_key = None
-    call_metrics_on_train = True
+    #call_metrics_on_train = True
+    call_metrics_on_train = False
     # decode
     codec = None
     model_desc_file = None

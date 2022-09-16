@@ -5,10 +5,13 @@ nas:
         type: NasPipeStep
 
     dataset:
-        type: Cifar10
+        #type: Cifar10
+        type: SmokingDataset
         common:
-            data_path: /data/cifar10/
-            batch_size: 64
+            #data_path: /data/cifar10/
+            data_path: /data/smoking/
+            #batch_size: 64
+            batch_size: 12
             train_portion: 0.5
 
     search_algorithm:
@@ -26,13 +29,17 @@ nas:
                       'normal', 'normal',
             ]
 
-            input_size: 32
-            init_channels: 16
-            num_classes: 10
+            #input_size: 32
+            input_size: 128
+            #init_channels: 16
+            init_channels: 8
+            #num_classes: 10
+            num_classes: 2
             auxiliary: False
             search: True
 
-            latency_lut_path: '/root/AutoML/src/utils/latency_gpu_darts.pkl'
+            #latency_lut_path: '/root/AutoML/src/utils/latency_gpu_darts.pkl'
+            latency_lut_path: '/root/AutoML/src/utils/latency_gpu_darts_smoking.pkl'
 
             normal:
                 type: 'block'

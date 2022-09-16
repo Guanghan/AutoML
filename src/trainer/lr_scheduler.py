@@ -16,8 +16,17 @@ class DefaultLrSchedulerConfig(object):
     _class_type = "trainer.lr_scheduler"
     _update_all_attrs = True
     _exclude_keys = ['type']
+    '''
     type = 'MultiStepLR'
     params = {"milestones": [75, 150], "gamma": 0.5}
+    '''
+
+    type = 'CosineAnnealingLR'
+    params = {
+        "T_max": 600.0
+        #"T_max": 300.0
+        #"T_max": 60.0
+    }
 
 
 class LrScheduler(object):

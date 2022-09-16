@@ -52,6 +52,7 @@ class Dataset(Task):
             self._transforms.__transform__ = kwargs["transforms"]
         self.dataset_init()
         self.sampler = self._init_sampler()
+        print("Using dataset sampler: {}".format(self.sampler))
 
     def dataset_init(self):
         """Init Dataset before sampler."""
@@ -69,6 +70,7 @@ class Dataset(Task):
         Return:
             a batch of data (dict, list, optional)
         """
+        print("Shuffle: {}".format(self.args["shuffle"]))
         data_loader = torch_data.DataLoader(self,
                                             batch_size=self.args["batch_size"],
                                             shuffle=self.args["shuffle"],

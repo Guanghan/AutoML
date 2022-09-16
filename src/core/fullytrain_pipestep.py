@@ -48,7 +48,8 @@ class FullyTrainPipeStep(PipeStep):
 
     def _get_current_step_records(self):
         step_name = self.task.step_name
-        models_folder = "output/"
+        #models_folder = "output/"
+        models_folder = "/root/AutoML/src/core/output"
 
         # records = Saver().get_pareto_front_records(PipelineConfig.steps[cur_index - 1])
         records = Saver().load_records_from_model_folder(models_folder)
@@ -65,6 +66,10 @@ class FullyTrainPipeStep(PipeStep):
 
         log.info("model_desc: ", model_desc)
         if model_desc is not None:
+            # DEBUG: using resnet to train on a new dataset
+            #import torchvision.models as models
+            #model = models.resnet34(pretrained=True)
+
             model = NetworkDesc(model_desc).to_model()
             log.info("Model: {}".format(model))
             trainer = cls_trainer(model, model_id)

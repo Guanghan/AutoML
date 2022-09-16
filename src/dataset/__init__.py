@@ -5,3 +5,4 @@
 @file_desc:
 """
 from src.dataset.cifar10 import Cifar10
+from src.dataset.smoking_dataset import SmokingDataset

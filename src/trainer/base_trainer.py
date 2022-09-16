@@ -49,7 +49,8 @@ class DefaultTrainerConfig(object):
     # evaluation
     perfs_cmp_mode = None
     perfs_cmp_key = None
-    call_metrics_on_train = True
+    #call_metrics_on_train = True
+    call_metrics_on_train = False
 
     grad_clip = None
     model_statistics = True
@@ -165,7 +166,10 @@ class Trainer(Worker):
         self.lr_scheduler = LrScheduler()(self.optimizer) if lr_scheduler is None else lr_scheduler
 
         # Some trainer has different train batch size from valid batch
-        self.train_metrics = self._init_metrics(metrics)
+        if self.call_metrics_on_train:
+            self.train_metrics = self._init_metrics(metrics)
+        else:
+            self.train_metrics = None
         self.valid_metrics = self._init_metrics(metrics)
 
         if self.callbacks is None:

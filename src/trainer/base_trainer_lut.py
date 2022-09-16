@@ -4,7 +4,7 @@
 @time: 10/9/20 2:43
 @file_desc:
 """
-import os
+import os, time
 import pickle
 import glog as log
 import torch
@@ -24,6 +24,13 @@ from src.trainer.base_metrics import Metrics
 
 from src.search_space.description import NetworkDesc
 from src.core.default_config import OptimConfig, LrSchedulerConfig, MetricsConfig, LossConfig, TrainerConfig
+
+#import torch.cuda.amp.autocast as autocast
+import torch.cuda.profiler as profiler
+#import pyprof
+
+#pyprof.init()
+iter_to_capture = 100
 
 
 class DefaultTrainerConfig(object):
@@ -45,7 +52,8 @@ class DefaultTrainerConfig(object):
     loss = LossConfig()
     # Validation
     with_valid = True
-    valid_interval = 1
+    #valid_interval = 10
+    valid_interval = 30
     # evaluation
     perfs_cmp_mode = None
     perfs_cmp_key = None
@@ -97,14 +105,17 @@ class Trainer(Worker):
         self.performance = None
         self.call_metrics_on_train = self.config.call_metrics_on_train
 
+        vis_gpu = os.environ['CUDA_VISIBLE_DEVICES']
         self.model_desc = {}
         self.visual_data = {}
         self.load_ckpt_flag = load_ckpt_flag
-        self.checkpoint_file_name = 'checkpoint.pth'
-        self.model_pickle_file_name = 'model.pkl'
+        self.checkpoint_file_name = 'checkpoint_{}.pth'.format(vis_gpu)
+        self.model_pickle_file_name = 'model_{}.pkl'.format(vis_gpu)
         self.model_path = os.path.join(self.model_pickle_file_name)
         self.checkpoint_file = os.path.join(self.checkpoint_file_name)
-        self.weights_file = "model.pth"
+        self.weights_file = "model_{}.pth".format(vis_gpu)
+
+        print("Visible GPU device: {}".format(vis_gpu))
 
         # Indicate whether the necessary components of a trainer
         # has been built for running
@@ -208,15 +219,17 @@ class Trainer(Worker):
         input, target = batch
         if self.use_cuda:
             input, target = input.cuda(), target.cuda()
+            #print("input image shape: {}".format(input.shape))
+            #print("target: {}".format(target))
         return input, target
 
     def _default_train_step(self, batch):
         input, target = batch
         self.optimizer.zero_grad()
 
-        output, latency = self.model(input)
-        #log.info("output: {}".format(len(output[0])))
-        #log.info("target: {}".format(target.shape))
+        output = self.model(input)
+        if isinstance(output, tuple):
+            output, latency = output
         if isinstance(output, tuple):   # use the last auxiliary output as
             output = output[-1]
 
@@ -227,13 +240,21 @@ class Trainer(Worker):
             torch.nn.utils.clip_grad_norm_(self.model.parameters(),
                                            self.config.grad_clip)
         self.optimizer.step()
+
         return {'loss': loss.item(),
                 'train_batch_output': output}
 
     def _default_valid_step(self, batch):
         input, target = batch
-        output, latency = self.model(input)
-        print("validation latency: {}".format(latency))
+        tic = time.time()
+        #output, latency = self.model(input)
+        output = self.model(input)
+        if isinstance(output, tuple):
+            output, latency = output
+        toc = time.time()
+        #real_latency = (toc - tic) * 1000
+        #print("validation latency: {}".format(latency))
+        #print("validation real latency: {}".format(real_latency))
 
         if isinstance(output, tuple):   # use the last auxiliary output as
             output = output[-1]
@@ -392,11 +413,21 @@ class Trainer(Worker):
 
     def _train_epoch(self):
         """Training logic within each epoch"""
+
+        # DEBUG: nvidia profiling
+        import torch.cuda.profiler as profiler
+        iter_to_capture = 100
+        '''
+        import pyprof
+        pyprof.init()
+        '''
+
         # Activate training mode
         self.model.train()
 
         # Perform training for one epoch
         for batch_index, batch in enumerate(self.train_loader):
+            #if batch_index > 2: break
             # Fetch a batch of data
             batch = self.make_batch(batch)
             batch_logs = {'train_batch': batch}
@@ -405,8 +436,18 @@ class Trainer(Worker):
             self.callbacks.before_train_step(batch_index, batch_logs)
 
             # Perform backprop
+            with torch.autograd.profiler.emit_nvtx():
+                if batch_index == iter_to_capture:
+                    profiler.start()
+                train_batch_output = self.train_step(batch)
+                if batch_index == iter_to_capture:
+                    profiler.stop()
+            batch_logs.update(train_batch_output)
+            '''
+
             train_batch_output = self.train_step(batch)
             batch_logs.update(train_batch_output)
+            '''
 
             # Perform logic after backprop
             self.callbacks.after_train_step(batch_index, batch_logs)

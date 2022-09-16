@@ -54,14 +54,14 @@ class DartsTrainer(Callback):
         # Get current train batch directly from logs
         train_batch = logs['train_batch']
         train_input, train_target = train_batch
-        val_input, val_target = next(self.val_loader_iter)
-        '''
+        #val_input, val_target = next(self.val_loader_iter)
+        #'''
         try:
             val_input, val_target = next(self.val_loader_iter)
         except Exception:
             self.val_loader_iter = iter(self.trainer.val_loader)
             val_input, val_target = next(self.val_loader_iter)
-        '''
+        #'''
         val_input, val_target = val_input.to(self.device), val_target.to(self.device)
 
         # Call arch search step

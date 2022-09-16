@@ -5,9 +5,11 @@ nas:
         type: NasPipeStep
 
     dataset:
-        type: Cifar10
+        #type: Cifar10
+        type: SmokingDataset
         common:
-            data_path: /data/cifar10/
+            #data_path: /data/cifar10/
+            data_path: /data/smoking/
             batch_size: 64
             train_portion: 0.5
 
@@ -112,31 +114,46 @@ fully_train:
         type: Trainer
         callbacks: DartsFullTrainer
         epochs: 600
+        #epochs: 300  # for smoking
+        #epochs: 60  # for smoking
         optim:
             type: SGD
             params:
                 lr: 0.025
+                #lr: 0.05
                 momentum: 0.9
                 weight_decay: !!float 3e-4
         lr_scheduler:
             type: CosineAnnealingLR
             params:
                 T_max: 600.0
+                #T_max: 300.0
+                #T_max: 60.0
         loss:
             type: MixAuxiliaryLoss
             params:
                 loss_base:
                     type: torch.nn.CrossEntropyLoss
                 aux_weight: 0.4
-        grad_clip: 5.0
+        #grad_clip: 5.0
+        grad_clip: 0
         warmup_epochs: 0
-        drop_path_prob: 0.2
+        #drop_path_prob: 0.2
+        drop_path_prob: 0
 
     dataset:
-        type: Cifar10
+        #type: Cifar10
+        type: SmokingDataset
         common:
-            data_path: /data/cifar10/
+            #data_path: /data/cifar10/
+            data_path: /data/smoking/
             num_workers: 32
-            batch_size: 96
+            #num_workers: 1
+            #batch_size: 96
+            #batch_size: 128
+            #batch_size: 36
+            batch_size: 80
+            train_portion: 1.0  # FOR smoking
+            #shuffle: False  # for smoking
         train:
             cutout_length: 8

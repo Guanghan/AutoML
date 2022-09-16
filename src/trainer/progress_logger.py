@@ -28,7 +28,7 @@ class ProgressLogger(Callback):
     """
 
     def __init__(self, train_verbose=2, valid_verbose=2,
-                 train_report_steps=10, valid_report_steps=10):
+                 train_report_steps=100, valid_report_steps=100):
         """Initialize a ProgressLogger with user-defined verbose levels."""
         super(Callback, self).__init__()
         self.train_verbose = train_verbose
